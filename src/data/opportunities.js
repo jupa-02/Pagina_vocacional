@@ -31,17 +31,47 @@ export const realOpportunities = {
             link: "https://www.colfuturo.org/"
         },
         {
-            id: 'ser_mineducacion',
-            name: "Becas SER",
-            provider: "Ministerio de Educación Nacional",
-            deadline: "Variable",
-            coverage: "Variable (Apoyo sostenimiento/matrícula)",
-            target: ["undergrad", "social_mobility"],
-            description: "Fomento a la educación superior para estratos 1, 2 y 3. Revisar convocatorias de universidades específicas.",
-            link: "https://www.mineducacion.gov.co/"
+            id: 'beca_santander',
+            name: "Becas Santander Estudios",
+            provider: "Banco Santander",
+            deadline: "Abierto todo el año",
+            coverage: "Variable (Cursos + Manutención)",
+            target: ["corporative", "businessEconomist", "undergrad"],
+            description: "Programas de apoyo para desarrollo de habilidades empresariales, idiomas y tecnología.",
+            link: "https://www.becas-santander.com/"
+        },
+        {
+            id: 'fun_carolina',
+            name: "Becas Fundación Carolina",
+            provider: "Fundación Carolina (España)",
+            deadline: "Marzo 2026",
+            coverage: "Tiquetes + Seguro + Matrícula parcial/total",
+            target: ["corporative", "policyWonk", "masters"],
+            description: "Excelente para MBAs y maestrías en Negocios en España. Muy competitiva pero de alto valor curricular.",
+            link: "https://www.fundacioncarolina.es/"
         }
     ],
     universityPrograms: [
+        {
+            id: 'uniandes_finanzas',
+            university: "Universidad de los Andes",
+            program: "Maestría en Finanzas",
+            type: "Masters",
+            ranking: "#1 Finanzas Colombia",
+            tags: ["corporative", "businessEconomist"],
+            description: "Formación de élite para banca de inversión y finanzas corporativas. Networking inigualable.",
+            location: "Bogotá"
+        },
+        {
+            id: 'ceipa_gerencia',
+            university: "CEIPA",
+            program: "Gerencia Financiera",
+            type: "Specialization",
+            ranking: "Enfoque Práctico",
+            tags: ["corporative", "remote"],
+            description: "Ideal para quienes trabajan. Enfoque 100% aplicado a la toma de decisiones gerenciales.",
+            location: "Virtual / Medellín"
+        },
         {
             id: 'uniandes_econ',
             university: "Universidad de los Andes",
@@ -68,7 +98,7 @@ export const realOpportunities = {
             program: "Ciencia de Datos",
             type: "Undergrad",
             ranking: "Top 3 Colombia",
-            tags: ["techEconomist", "corporate"],
+            tags: ["techEconomist", "corporative"],
             description: "Primer programa de Ciencia de Datos lanzado en Colombia. Fuerte enfoque en aplicación empresarial y ética de datos.",
             location: "Bogotá"
         },
@@ -91,9 +121,29 @@ export const realOpportunities = {
             tags: ["businessEconomist", "policyWonk"],
             description: "Enfoque único en Finanzas Descentralizadas (DeFi) y análisis de fenómenos sociales. Menos 'ingenieril', más aplicado.",
             location: "Bogotá"
-        },
+        }
     ],
     jobs: [
+        {
+            id: 'bavaria_mt',
+            role: "Global Management Trainee (GMT)",
+            company: "Bavaria (AB InBev)",
+            location: "Bogotá / Global",
+            type: "Corporate",
+            tags: ["corporative", "top_tier"],
+            description: "El programa de semillero más famoso del mundo corporativo. Rotación por todas las áreas de la compañía.",
+            link: "https://www.bavaria.co/talento"
+        },
+        {
+            id: 'jp_morgan',
+            role: "Corporate Analyst",
+            company: "J.P. Morgan",
+            location: "Bogotá",
+            type: "Finance",
+            tags: ["corporative", "businessEconomist"],
+            description: "Entra a la banca de inversión global desde Bogotá. Operaciones financieras de alto nivel.",
+            link: "https://careers.jpmorgan.com/US/en/home"
+        },
         {
             id: 'nubank_ds',
             role: "Data Analyst / Scientist",
@@ -140,12 +190,21 @@ export const realOpportunities = {
             company: "McKinsey & Company",
             location: "Bogotá",
             type: "Consulting",
-            tags: ["businessEconomist", "top_tier"],
+            tags: ["businessEconomist", "top_tier", "corporative"],
             description: "La escuela de negocios más acelerada del mundo. Buscan perfiles con excelencia académica y liderazgo.",
             link: "https://www.mckinsey.com/careers/search-jobs"
         }
     ],
     courses: [
+        {
+            id: 'pm_google',
+            title: "Project Management Professional Certificate",
+            platform: "Coursera / Google",
+            type: "Certificación",
+            tags: ["corporative", "management"],
+            description: "La certificación estándar para entrar al mundo de la gestión de proyectos corporativos modernos.",
+            link: "https://www.coursera.org/professional-certificates/google-project-management"
+        },
         {
             id: 'coursera_metrics',
             title: "Econometrics: Methods and Applications",

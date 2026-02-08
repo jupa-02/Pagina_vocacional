@@ -16,24 +16,43 @@ export default function AgentsDashboard() {
     useEffect(() => {
         if (!recommendedPath) return;
 
-        // Filter opportunities based on tags that include the recommendedPath
-        // OR generic tags that apply to everyone (if any)
-        const filterByTag = (items) => {
-            return items.filter(item =>
-                item.tags && (item.tags.includes(recommendedPath) || item.tags.includes('all'))
-            ).slice(0, 3); // Take top 3
+        console.log("Filtering opportunities for:", recommendedPath);
+
+        // FALLBACK MAP: If a profile has few specific results, borrow from related profiles
+        const relatedProfiles = {
+            corporative: ['businessEconomist', 'top_tier'],
+            businessEconomist: ['corporative', 'techEconomist'],
+            techEconomist: ['businessEconomist', 'researcher'],
+            policyWonk: ['researcher', 'social_mobility'],
+            researcher: ['policyWonk', 'top_tier']
         };
 
-        const universityPrograms = filterByTag(realOpportunities.universityPrograms || []);
-        const scholarships = filterByTag(realOpportunities.scholarships || []);
-        const jobs = filterByTag(realOpportunities.jobs || []);
-        const courses = filterByTag(realOpportunities.courses || []);
+        const filterByTag = (items) => {
+            if (!items) return [];
+
+            // 1. Strict Match
+            let matches = items.filter(item =>
+                item.tags && (item.tags.includes(recommendedPath) || item.tags.includes('all'))
+            );
+
+            // 2. Fallback if not enough matches (less than 2)
+            if (matches.length < 2) {
+                const backups = relatedProfiles[recommendedPath] || [];
+                const backupMatches = items.filter(item =>
+                    item.tags && item.tags.some(t => backups.includes(t))
+                );
+                // Merge unique items
+                matches = [...matches, ...backupMatches.filter(b => !matches.find(m => m.id === b.id))];
+            }
+
+            return matches.slice(0, 3);
+        };
 
         setOpportunities({
-            maestrias: universityPrograms,
-            becas: scholarships,
-            empleos: jobs,
-            cursos: courses
+            maestrias: filterByTag(realOpportunities.universityPrograms),
+            becas: filterByTag(realOpportunities.scholarships),
+            empleos: filterByTag(realOpportunities.jobs),
+            cursos: filterByTag(realOpportunities.courses)
         });
 
     }, [recommendedPath]);
