@@ -113,17 +113,56 @@ export const realOpportunities = {
             location: "Nivel Nacional"
         },
         {
-            id: 'externado_ds',
-            university: "Universidad Externado",
-            program: "Ciencia de Datos",
-            type: "Undergrad",
-            ranking: "Enfoque Social/Financiero",
-            tags: ["businessEconomist", "policyWonk"],
-            description: "Enfoque único en Finanzas Descentralizadas (DeFi) y análisis de fenómenos sociales. Menos 'ingenieril', más aplicado.",
-            location: "Bogotá"
+            id: 'utb_innovacion',
+            university: "Universidad Tecnológica de Bolívar (UTB)",
+            program: "Maestría en Gestión de Innovación",
+            type: "Masters",
+            ranking: "Top Regional (Cartagena)",
+            tags: ["corporative", "businessEconomist", "innovation"],
+            description: "El programa líder en el Caribe para gerentes que buscan liderar la transformación digital desde Cartagena.",
+            location: "Cartagena"
+        },
+        {
+            id: 'unicartagena_amb',
+            university: "Universidad de Cartagena",
+            program: "Maestría en Ciencias Ambientales",
+            type: "Masters",
+            ranking: "Pública Acreditada",
+            tags: ["policyWonk", "researcher", "social_impact"],
+            description: "Formación rigurosa en sostenibilidad y políticas públicas ambientales. Ideal para perfiles de impacto social regional.",
+            location: "Cartagena"
+        },
+        {
+            id: 'mit_micromasters',
+            title: "MicroMasters in Data, Economics, and Development Policy",
+            platform: "EdX / MIT",
+            type: "Avanzado",
+            tags: ["policyWonk", "researcher"],
+            description: "Casi una maestría. Diseñado por Esther Duflo y Abhijit Banerjee (Nobeles). Rigor total.",
+            link: "https://micromasters.mit.edu/dedp/"
         }
     ],
     jobs: [
+        {
+            id: 'reficar_ing',
+            role: "Ingeniero de Planeación / Analista",
+            company: "Reficar / Ecopetrol",
+            location: "Cartagena",
+            type: "Industrial",
+            tags: ["corporative", "techEconomist"],
+            description: "Oportunidades clave en la industria más grande de la región. Buscan perfiles analíticos y de ingeniería.",
+            link: "https://jobs.ecopetrol.com.co/"
+        },
+        {
+            id: 'ctg_tourism',
+            role: "Gerente de Proyectos Turísticos",
+            company: "Corpoturismo",
+            location: "Cartagena",
+            type: "Public/Private",
+            tags: ["businessEconomist", "social_mobility"],
+            description: "Lidera la estrategia turística de la ciudad. Requiere visión de negocios y política pública.",
+            link: "https://cartagenadeindias.travel/"
+        },
         {
             id: 'bavaria_mt',
             role: "Global Management Trainee (GMT)",
@@ -196,6 +235,24 @@ export const realOpportunities = {
         }
     ],
     courses: [
+        {
+            id: 'sena_adsi',
+            title: "Análisis y Desarrollo de Sistemas (ADSO)",
+            platform: "SENA Sofía Plus",
+            type: "Tecnólogo",
+            tags: ["techEconomist", "social_mobility", "all"],
+            description: "El programa técnico más robusto de Colombia. Gratuito y con alta empleabilidad inmediata.",
+            link: "http://oferta.senasofiaplus.edu.co/sofia-oferta/"
+        },
+        {
+            id: 'harvard_business',
+            title: "Business Analytics",
+            platform: "Harvard Online",
+            type: "Certificación",
+            tags: ["businessEconomist", "corporative", "top_tier"],
+            description: "Sello de calidad Harvard. Aprende a tomar decisiones basadas en datos con rigor académico.",
+            link: "https://online.hbs.edu/courses/business-analytics/"
+        },
         {
             id: 'pm_google',
             title: "Project Management Professional Certificate",
