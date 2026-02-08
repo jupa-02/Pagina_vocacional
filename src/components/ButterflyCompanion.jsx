@@ -1,28 +1,30 @@
-import { useState, useEffect } from 'react';
-import { motion, useSpring, useTransform } from 'framer-motion';
+import { useEffect } from 'react';
+import { motion, useSpring, useTransform, useMotionValue } from 'framer-motion';
 
 export default function ButterflyCompanion({ step }) {
-    // Mouse Parallax Logic
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    // Mouse Parallax Logic using useMotionValue for performance
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
 
     useEffect(() => {
         const handleMouseMove = (e) => {
             // Normalize mouse position from -1 to 1
             const x = (e.clientX / window.innerWidth) * 2 - 1;
             const y = (e.clientY / window.innerHeight) * 2 - 1;
-            setMousePosition({ x, y });
+            mouseX.set(x);
+            mouseY.set(y);
         };
 
         window.addEventListener('mousemove', handleMouseMove);
         return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
+    }, [mouseX, mouseY]);
 
     // Smooth spring animation for the mouse follow
     const springConfig = { damping: 25, stiffness: 150 };
-    const x = useSpring(useTransform(motion.value(mousePosition.x), [-1, 1], [-30, 30]), springConfig);
-    const y = useSpring(useTransform(motion.value(mousePosition.y), [-1, 1], [-30, 30]), springConfig);
-    const rotateX = useSpring(useTransform(motion.value(mousePosition.y), [-1, 1], [15, -15]), springConfig);
-    const rotateY = useSpring(useTransform(motion.value(mousePosition.x), [-1, 1], [-15, 15]), springConfig);
+    const x = useSpring(useTransform(mouseX, [-1, 1], [-30, 30]), springConfig);
+    const y = useSpring(useTransform(mouseY, [-1, 1], [-30, 30]), springConfig);
+    const rotateX = useSpring(useTransform(mouseY, [-1, 1], [15, -15]), springConfig);
+    const rotateY = useSpring(useTransform(mouseX, [-1, 1], [-15, 15]), springConfig);
 
     // Determine position based on step
     const getPosition = (s) => {
@@ -72,7 +74,7 @@ export default function ButterflyCompanion({ step }) {
                 className="relative w-48 h-48"
             >
                 <img
-                    src="/butterfly_real.png"
+                    src={`${import.meta.env.BASE_URL}butterfly_real.png`}
                     alt="Butterfly Companion"
                     className="w-full h-full object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] animate-float-slow"
                 />
