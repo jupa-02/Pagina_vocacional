@@ -140,9 +140,8 @@ export default function AgentsDashboard() {
                     <div className="space-y-4">
                         {opportunities.maestrias.length > 0 ? (
                             opportunities.maestrias.map((prog, i) => (
-                                <motion.div
+                                <div
                                     key={prog.id}
-                                    variants={itemVariants}
                                     className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(99,102,241,0.2)]"
                                 >
                                     <div className="absolute top-4 right-4 text-white/20 group-hover:text-pink-400 transition-colors">
@@ -159,7 +158,7 @@ export default function AgentsDashboard() {
                                             </div>
                                         )}
                                     </div>
-                                </motion.div>
+                                </div>
                             ))
                         ) : (
                             <p className="text-white/50 italic">Buscando programas específicos...</p>
@@ -175,9 +174,8 @@ export default function AgentsDashboard() {
                     <div className="space-y-4">
                         {opportunities.becas.length > 0 ? (
                             opportunities.becas.map((beca, i) => (
-                                <motion.div
+                                <div
                                     key={beca.id}
-                                    variants={itemVariants}
                                     className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(250,204,21,0.2)]"
                                 >
                                     <div className="flex justify-between items-start mb-2">
@@ -202,7 +200,7 @@ export default function AgentsDashboard() {
                                             Ver Convocatoria Oficial
                                         </a>
                                     </div>
-                                </motion.div>
+                                </div>
                             ))
                         ) : (
                             <p className="text-white/50 italic">Escaneando bases de datos de becas...</p>
@@ -221,9 +219,8 @@ export default function AgentsDashboard() {
                     <div className="space-y-4">
                         {opportunities.empleos.length > 0 ? (
                             opportunities.empleos.map((job, i) => (
-                                <motion.div
+                                <div
                                     key={job.id}
-                                    variants={itemVariants}
                                     className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(96,165,250,0.2)]"
                                 >
                                     <div className="flex justify-between items-start mb-2">
@@ -236,7 +233,7 @@ export default function AgentsDashboard() {
                                     <a href={job.link} target="_blank" rel="noopener noreferrer" className="inline-block text-blue-300 hover:text-white text-xs font-bold transition-colors">
                                         Ver Portal de Empleo →
                                     </a>
-                                </motion.div>
+                                </div>
                             ))
                         ) : (
                             <p className="text-white/50 italic">Buscando vacantes relevantes...</p>
@@ -252,9 +249,8 @@ export default function AgentsDashboard() {
                     <div className="space-y-4">
                         {opportunities.cursos.length > 0 ? (
                             opportunities.cursos.map((course, i) => (
-                                <motion.div
+                                <div
                                     key={course.id}
-                                    variants={itemVariants}
                                     className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(52,211,153,0.2)]"
                                 >
                                     <div className="flex justify-between items-start mb-2">
@@ -267,7 +263,7 @@ export default function AgentsDashboard() {
                                     <a href={course.link} target="_blank" rel="noopener noreferrer" className="text-green-300 hover:text-green-200 text-xs font-bold underline">
                                         Ir al Curso
                                     </a>
-                                </motion.div>
+                                </div>
                             ))
                         ) : (
                             <p className="text-white/50 italic">Curando cursos para ti...</p>
