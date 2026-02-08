@@ -48,11 +48,40 @@ export default function AgentsDashboard() {
             return matches.slice(0, 3);
         };
 
+        const getAIExplanation = (itemTags) => {
+            if (!itemTags || !recommendedPath) return null;
+
+            const matchTemplates = [
+                `🎯 Tu perfil ${recommendedPath} es ideal para esto.`,
+                `🚀 Potencia tus habilidades de ${recommendedPath}.`,
+                `✨ Seleccionado por nuestro algoritmo para ${recommendedPath}.`,
+                `💡 Alta afinidad con tus intereses detectados.`
+            ];
+
+            const generalTemplates = [
+                "💎 Una oportunidad de alto valor curricular.",
+                "🔥 Altamente demandado en el mercado actual.",
+                "🌟 Recomendado para perfiles de liderazgo."
+            ];
+
+            if (itemTags.includes(recommendedPath)) {
+                return matchTemplates[Math.floor(Math.random() * matchTemplates.length)];
+            }
+            return generalTemplates[Math.floor(Math.random() * generalTemplates.length)];
+        };
+
+        const enhanceWithExplanation = (items) => {
+            return items.map(item => ({
+                ...item,
+                explanation: getAIExplanation(item.tags)
+            }));
+        };
+
         setOpportunities({
-            maestrias: filterByTag(realOpportunities.universityPrograms),
-            becas: filterByTag(realOpportunities.scholarships),
-            empleos: filterByTag(realOpportunities.jobs),
-            cursos: filterByTag(realOpportunities.courses)
+            maestrias: enhanceWithExplanation(filterByTag(realOpportunities.universityPrograms)),
+            becas: enhanceWithExplanation(filterByTag(realOpportunities.scholarships)),
+            empleos: enhanceWithExplanation(filterByTag(realOpportunities.jobs)),
+            cursos: enhanceWithExplanation(filterByTag(realOpportunities.courses))
         });
 
     }, [recommendedPath]);
