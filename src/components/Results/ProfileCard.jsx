@@ -56,10 +56,13 @@ export default function ProfileCard({ profileData }) {
                             <BookOpen size={18} className="text-pink-400" /> Ruta de Aprendizaje
                         </h4>
                         <ul className="text-sm space-y-2 text-slate-300">
-                            {profileData.roadmap.map((step, i) => (
-                                <li key={i} className="flex gap-2">
-                                    <span className="text-indigo-400 font-bold">{i + 1}.</span>
-                                    {step}
+                            {profileData.roadmap.map((stepObj, i) => (
+                                <li key={i} className="flex gap-2 items-start">
+                                    <span className="text-indigo-400 font-bold shrink-0">{i + 1}.</span>
+                                    <div>
+                                        <span className="font-semibold text-slate-200 block">{stepObj.step}</span>
+                                        <span className="text-slate-300">{stepObj.item}</span>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
