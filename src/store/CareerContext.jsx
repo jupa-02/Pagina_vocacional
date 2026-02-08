@@ -35,15 +35,26 @@ export function CareerProvider({ children }) {
     const [recommendedPath, setRecommendedPath] = useState(null);
 
     const updateProfile = (section, key, value) => {
-        setProfile(prev => ({
-            ...prev,
-            [section]: {
-                ...prev[section],
-                [key]: value
-            }
-        }));
-    };
+        setProfile(prev => {
+            // Deep merge logic if needed, but for now simple 2-level
+            // If value is an object (like {level: 3}), merge it
+            const currentSection = prev[section] || {};
+            const currentValue = currentSection[key];
 
+            let newValue = value;
+            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                newValue = { ...currentValue, ...value };
+            }
+
+            return {
+                ...prev,
+                [section]: {
+                    ...prev[section],
+                    [key]: newValue
+                }
+            };
+        });
+    };
     const calculatePath = () => {
         // Logic to determine path based on granular profile
         let scores = {

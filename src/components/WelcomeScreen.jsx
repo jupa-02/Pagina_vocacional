@@ -5,73 +5,67 @@ export default function WelcomeScreen({ onStart }) {
     const [showButton, setShowButton] = useState(false);
 
     useEffect(() => {
-        const timer = setTimeout(() => setShowButton(true), 2000);
+        const timer = setTimeout(() => setShowButton(true), 2500);
         return () => clearTimeout(timer);
     }, []);
 
     return (
-        <div className="fixed inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col items-center justify-center p-4 z-50 transition-opacity duration-1000">
+        <div className="fixed inset-0 bg-black flex flex-col items-center justify-center p-4 z-50 overflow-hidden">
 
-            {/* Butterfly Animation Container */}
-            <div className="relative w-32 h-32 mb-8 animate-float">
-                <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-2xl">
-                    <g className="animate-wing-left origin-center">
-                        <path d="M50 50 C 20 20, 0 50, 20 80 C 30 90, 45 60, 50 50 Z" fill="url(#wingGradient)" opacity="0.9" />
-                    </g>
-                    <g className="animate-wing-right origin-center">
-                        <path d="M50 50 C 80 20, 100 50, 80 80 C 70 90, 55 60, 50 50 Z" fill="url(#wingGradient)" opacity="0.9" />
-                    </g>
-                    <defs>
-                        <linearGradient id="wingGradient" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stopColor="#6366f1" />
-                            <stop offset="100%" stopColor="#ec4899" />
-                        </linearGradient>
-                    </defs>
-                </svg>
+            {/* Background Gradient - Cinematic/Ethereal */}
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-indigo-950 to-black opacity-80 z-0"></div>
+
+            {/* Realistic Butterfly Container */}
+            <div className="relative z-10 mb-12 mix-blend-screen opacity-90">
+                {/* Using a reliable high-quality GIF of a real butterfly (Morpho) from Wikimedia/Public Domain or similar stable source */}
+                {/* Fallback to high-quality CSS if image breaks, but we will use an image tag */}
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/2/23/Blue_Morpho_Butterfly.jpg"
+                    alt="Real Butterfly"
+                    className="w-64 h-64 object-cover rounded-full shadow-[0_0_100px_rgba(99,102,241,0.5)] animate-pulse-slow mask-image-circle"
+                    style={{
+                        maskImage: 'radial-gradient(circle, black 50%, transparent 70%)',
+                        WebkitMaskImage: 'radial-gradient(circle, black 50%, transparent 70%)'
+                    }}
+                />
+                {/* Overlay animation for "life" */}
+                <div className="absolute inset-0 bg-indigo-500 mix-blend-overlay animate-pulse rounded-full opacity-20"></div>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500 mb-6 animate-fade-in-up">
-                Hola Caro ✨
-            </h1>
+            <div className="relative z-10 text-center">
+                <h1 className="text-6xl md:text-8xl font-serif text-white mb-6 tracking-tight animate-fade-in-up drop-shadow-2xl">
+                    Hola, <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">Caro</span>
+                </h1>
 
-            <p className="text-xl text-slate-600 mb-12 max-w-lg text-center opacity-0 animate-fade-in-up delay-500">
-                Tu futuro es brillante. Vamos a encontrar el camino exacto para ti.
-            </p>
+                <p className="text-xl md:text-2xl text-slate-300 mb-12 max-w-lg mx-auto font-light leading-relaxed animate-fade-in-up delay-700">
+                    Tu vocación no es un destino.<br />Es una métrica exacta.
+                </p>
 
-            {showButton && (
-                <button
-                    onClick={onStart}
-                    className="bg-slate-900 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-slate-800 transition-all flex items-center gap-3 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 animate-fade-in"
-                >
-                    Comenzar Diagnóstico
-                    <ArrowRight className="w-5 h-5" />
-                </button>
-            )}
+                {showButton && (
+                    <button
+                        onClick={onStart}
+                        className="group relative px-8 py-4 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full text-lg tracking-widest uppercase hover:bg-white/20 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_rgba(99,102,241,0.4)] animate-fade-in"
+                    >
+                        <span className="flex items-center gap-4">
+                            Iniciar Diagnóstico Real
+                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </span>
+                    </button>
+                )}
+            </div>
 
             <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        @keyframes wing-left {
-          0%, 100% { transform: scaleX(1) rotate(0deg); }
-          50% { transform: scaleX(0.8) rotate(10deg); }
-        }
-        @keyframes wing-right {
-          0%, 100% { transform: scaleX(1) rotate(0deg); }
-          50% { transform: scaleX(0.8) rotate(-10deg); }
-        }
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        .animate-wing-left { animation: wing-left 0.5s ease-in-out infinite alternate; transform-origin: 50% 50%; }
-        .animate-wing-right { animation: wing-right 0.5s ease-in-out infinite alternate; transform-origin: 50% 50%; }
-        .animate-fade-in-up { animation: fadeInUp 1s ease-out forwards; }
+        .delay-700 { animation-delay: 700ms; }
+        .animate-fade-in-up { animation: fadeInUp 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+        .animate-pulse-slow { animation: pulseSlow 4s infinite ease-in-out; }
+        
         @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .delay-500 { animation-delay: 500ms; }
+        @keyframes pulseSlow {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
       `}</style>
         </div>
     );

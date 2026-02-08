@@ -68,9 +68,16 @@ export default function AgentsDashboard() {
                             <div className="relative z-10">
                                 <div className="flex justify-between items-start mb-3">
                                     <span className="bg-indigo-50 text-indigo-700 text-[10px] font-extrabold px-2 py-1 rounded uppercase tracking-wider border border-indigo-100">{master.type}</span>
-                                    {master.score && <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full border border-green-200">{master.score}% Match</span>}
+                                    {master.score && (
+                                        <div className="text-right">
+                                            <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full border border-green-200 block w-fit ml-auto">{master.score}% Match</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">{master.program}</h3>
+                                {master.explanation && (
+                                    <p className="text-xs text-green-700 font-medium mb-2 italic">✨ {master.explanation}</p>
+                                )}
                                 <p className="text-indigo-900 font-medium text-sm mb-3">{master.university}</p>
                                 <p className="text-slate-600 text-sm mb-4 line-clamp-2 leading-relaxed">{master.description}</p>
                                 <a href={master.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-indigo-600 font-semibold text-sm hover:text-indigo-800 transition-colors">
@@ -156,6 +163,9 @@ export default function AgentsDashboard() {
                                     <h3 className="text-lg font-bold text-slate-900">{job.role}</h3>
                                     {job.score && <span className="bg-teal-50 text-teal-700 text-xs font-bold px-2 py-0.5 rounded border border-teal-100">{job.score}% Match</span>}
                                 </div>
+                                {job.explanation && (
+                                    <p className="text-xs text-teal-600 font-medium mb-1 italic">✨ {job.explanation}</p>
+                                )}
                                 <p className="text-slate-600 text-sm font-medium mb-2">{job.company} • {job.location}</p>
                                 <p className="text-slate-500 text-sm mb-3">{job.description}</p>
                                 <div className="flex flex-wrap gap-2">

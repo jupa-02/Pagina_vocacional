@@ -1,199 +1,314 @@
 {
     "maestrias": [
         {
-            "id": 1,
-            "university": "University of Padua (Italy)",
+            "id": "m1",
+            "university": "University of Padua",
             "program": "Erasmus Mundus: Data Engineering and Artificial Intelligence (DEAI)",
             "country": "Italy / France",
             "type": "Tech-Economist",
-            "description": "Especilizaci\u00f3n en 'Business, Economics, and Financial Data Science'. Becas Erasmus Mundus disponibles (cobertura total).",
+            "description": "Especilizaci\u00f3n en 'Business, Economics, and Financial Data Science'. Becas Erasmus Mundus disponibles (cobertura total + estipendio mensual).",
             "link": "https://www.unipd.it/en/erasmus-mundus-deai",
             "tags": [
                 "Full Funding",
                 "AI & Econ",
-                "Erasmus"
+                "Erasmus",
+                "Research"
             ]
         },
         {
-            "id": 2,
-            "university": "Fordham University (USA)",
+            "id": "m2",
+            "university": "Fordham University",
             "program": "M.S. in Data Science and Quantitative Economics",
-            "country": "USA",
+            "country": "USA (NYC)",
             "type": "Tech-Economist",
-            "description": "Programa STEM fusionando teor\u00eda econ\u00f3mica con data science. Elegible para becas de m\u00e9rito. Deadline: Jan 2026.",
+            "description": "Programa STEM. Fusi\u00f3n de teor\u00eda econ\u00f3mica con Big Data. Ideal para sector privado en NYC. Merit-based scholarships.",
             "link": "https://www.fordham.edu/academics/departments/data-science/graduate-programs/ms-in-data-science-and-quantitative-economics/",
             "tags": [
                 "STEM",
                 "Quant",
-                "Merit Aid"
+                "Merit Aid",
+                "Industry"
             ]
         },
         {
-            "id": 3,
+            "id": "m3",
             "university": "London School of Economics (LSE)",
-            "program": "MSc Social Data Science",
+            "program": "MSc Applied Social Data Science",
             "country": "UK",
             "type": "Policy/Research",
-            "description": "La intersecci\u00f3n perfecta entre ciencias sociales computacionales y econom\u00eda.",
+            "description": "Uso de datos para entender problemas sociales. Fuerte en inferencia causal y R. Prestigio global.",
             "link": "https://www.lse.ac.uk/study-at-lse/Graduate/degree-programmes-2024/MSc-Applied-Social-Data-Science",
             "tags": [
                 "Top Tier",
                 "Social Data",
-                "UK"
+                "UK",
+                "Policy"
             ]
         },
         {
-            "id": 4,
+            "id": "m4",
             "university": "Universidad de los Andes",
             "program": "Maestr\u00eda en Econom\u00eda (PEG)",
             "country": "Colombia",
             "type": "Research",
-            "description": "Lider nacional. Ideal como paso a PhD o sector p\u00fablico de alto nivel. Posibilidades de Asistencia Graduada.",
+            "description": "L\u00edder en la regi\u00f3n. Pasaporte al doctorado o puestos directivos en gobierno (DNP, BanRep). Asistencias graduadas competitivas.",
             "link": "https://economia.uniandes.edu.co/maestria-economia",
             "tags": [
                 "Regional Leader",
-                "Research"
+                "Research",
+                "Public Sector"
+            ]
+        },
+        {
+            "id": "m5",
+            "university": "University of Chicago (Harris)",
+            "program": "MSc in Computational Analysis and Public Policy (CAPP)",
+            "country": "USA",
+            "type": "Tech-Policy",
+            "description": "El programa definitivo para 'Tech-Economists' en gobierno. Computer Science + Econometr\u00eda rigurosa.",
+            "link": "https://harris.uchicago.edu/academics/design-your-own-path/degrees/ms-computational-analysis-public-policy-capp",
+            "tags": [
+                "Top Tier",
+                "Coding",
+                "Policy",
+                "USA"
+            ]
+        },
+        {
+            "id": "m6",
+            "university": "Toulouse School of Economics",
+            "program": "Master in Data Science for Social Science",
+            "country": "France",
+            "type": "Research",
+            "description": "Excelencia acad\u00e9mica a bajo costo (sistema franc\u00e9s). Fuerte enfoque en teor\u00eda de juegos y econometr\u00eda.",
+            "link": "https://www.tse-fr.eu/master-in-data-science-for-social-science",
+            "tags": [
+                "Affordable",
+                "Top Research",
+                "Europe"
+            ]
+        },
+        {
+            "id": "m7",
+            "university": "Carnegie Mellon University",
+            "program": "M.S. in Public Policy and Management (Data Analytics Track)",
+            "country": "USA",
+            "type": "Tech-Policy",
+            "description": "Enfoque t\u00e9cnico y anal\u00edtico para resolver problemas p\u00fablicos. CMU es l\u00edder mundial en CS.",
+            "link": "https://www.heinz.cmu.edu/programs/public-policy-management-master/data-analytics",
+            "tags": [
+                "STEM",
+                "Analytics",
+                "Top Tier"
             ]
         }
     ],
     "becas": [
         {
-            "id": 1,
+            "id": "b1",
             "name": "Cr\u00e9dito-Beca COLFUTURO",
             "entity": "Colfuturo",
-            "description": "Hasta USD 50.000. Condonable hasta el 80% si regresas a regiones o trabajas con el Estado. Convocatoria abre Enero/Febrero.",
-            "deadline": "28 Feb 2025 (Estimado)",
+            "description": "Hasta USD 50.000. Condonable hasta 80%. Requisito: Regresar a Colombia por 3 a\u00f1os. Convocatoria anual Ene-Feb.",
+            "deadline": "28 Feb 2025",
             "link": "https://www.colfuturo.org/",
             "tags": [
                 "Colombia",
-                "Top Funding"
+                "Loan-Scholarship",
+                "Government"
             ]
         },
         {
-            "id": 2,
+            "id": "b2",
             "name": "Chevening Scholarships",
             "entity": "UK Government",
-            "description": "Financiaci\u00f3n TOTAL para maestr\u00edas de 1 a\u00f1o en UK. Buscan l\u00edderes futuros. Aplicaciones abren en Agosto.",
+            "description": "Cobertura 100% (vuelos, matr\u00edcula, manutenci\u00f3n) para maestr\u00edas de 1 a\u00f1o en UK. Buscan l\u00edderes.",
             "deadline": "Noviembre 2025",
             "link": "https://www.chevening.org/scholarship/colombia/",
             "tags": [
-                "UK",
                 "Full Ride",
+                "UK",
                 "Leadership"
             ]
         },
         {
-            "id": 3,
+            "id": "b3",
+            "name": "Fulbright MinCiencias",
+            "entity": "Fulbright Colombia",
+            "description": "Para doctorados. Financiaci\u00f3n completa hasta 4 a\u00f1os en USA. Perfil investigativo alto.",
+            "deadline": "Mayo 2025",
+            "link": "https://fulbright.edu.co/becas/beca-fulbright-minciencias/",
+            "tags": [
+                "PhD",
+                "USA",
+                "Full Ride"
+            ]
+        },
+        {
+            "id": "b4",
             "name": "Becas OEA",
-            "entity": "Organizaci\u00f3n de Estados Americanos",
-            "description": "Hasta USD 10.000 anuales para posgrados en pa\u00edses miembros. Prioridad en desarrollo y tecnolog\u00eda.",
+            "entity": "OEA",
+            "description": "Hasta USD 10,000/a\u00f1o para estudios en la regi\u00f3n. Prioridad en desarrollo sostenible y tecnolog\u00eda.",
             "deadline": "Variable",
             "link": "https://www.oas.org/es/becas/",
             "tags": [
-                "Latam/USA",
+                "Latam",
                 "Development"
+            ]
+        },
+        {
+            "id": "b5",
+            "name": "Erasmus Mundus Joint Masters",
+            "entity": "Uni\u00f3n Europea",
+            "description": "Becas completas para programas conjuntos en m\u00faltiples pa\u00edses europeos. Muy prestigiosas.",
+            "deadline": "Enero 2026",
+            "link": "https://erasmus-plus.ec.europa.eu/opportunities/opportunities-for-individuals/students/erasmus-mundus-joint-masters-scholarships",
+            "tags": [
+                "Full Ride",
+                "Europe",
+                "International"
             ]
         }
     ],
     "empleos_simulados": [
         {
-            "id": 1,
-            "role": "Data Scientist (Economics Background)",
-            "company": "Rappi / Fintech Latam",
-            "location": "Remoto / Bogot\u00e1",
-            "description": "Optimizaci\u00f3n de riesgo crediticio usando Causal ML. Valoran economistas que programen en Python.",
+            "id": "j1",
+            "role": "Data Scientist (Economics Focus)",
+            "company": "Rappi",
+            "location": "Bogot\u00e1 / Remoto",
+            "description": "Modelado de riesgo credicitio y elasticidad de precios. Stack: Python, SQL, CausalML.",
             "skills": [
-                "Causal Inference",
                 "Python",
+                "Causal Inference",
                 "SQL"
             ],
             "salary": "$12M - $18M COP",
-            "link": "https://www.linkedin.com/jobs/search/?keywords=data%20scientist%20economist&location=Colombia"
+            "link": "https://www.linkedin.com/jobs/"
         },
         {
-            "id": 2,
-            "role": "Especialista en Evaluaci\u00f3n de Impacto",
-            "company": "DNP / Fedesarrollo",
+            "id": "j2",
+            "role": "Subdirector de Estudios Econ\u00f3micos",
+            "company": "Fedesarrollo",
             "location": "Bogot\u00e1",
-            "description": "Dise\u00f1o de evaluaciones experimentales para pol\u00edticas p\u00fablicas. Requiere Stata/R avanzado.",
+            "description": "Liderar investigaciones macroecon\u00f3micas y sectoriales. Redacci\u00f3n de policy papers.",
+            "skills": [
+                "Stata",
+                "Writing",
+                "Macroeconomics"
+            ],
+            "salary": "$15M - $20M COP",
+            "link": "https://www.fedesarrollo.org.co/"
+        },
+        {
+            "id": "j3",
+            "role": "Consultor Junior - Public Sector",
+            "company": "McKinsey & Company",
+            "location": "Bogot\u00e1",
+            "description": "Proyectos de transformaci\u00f3n digital para el estado. Resoluci\u00f3n de problemas complejos.",
+            "skills": [
+                "Excel",
+                "English",
+                "Problem Solving"
+            ],
+            "salary": "$10M - $14M COP",
+            "link": "https://www.mckinsey.com/careers"
+        },
+        {
+            "id": "j4",
+            "role": "Research Assistant (Pre-Doc)",
+            "company": "IPA (Innovations for Poverty Action)",
+            "location": "Medell\u00edn / Field",
+            "description": "Coordinaci\u00f3n de RCTs (Randomized Controlled Trials) en campo. Limpieza de datos en Stata/R.",
             "skills": [
                 "Stata",
                 "R",
-                "Impact Evaluation"
+                "Fieldwork"
             ],
-            "salary": "$8M - $11M COP",
-            "link": "https://www.fedesarrollo.org.co/oportunidades"
+            "salary": "$4M - $6M COP",
+            "link": "https://www.poverty-action.org/careers"
         },
         {
-            "id": 3,
-            "role": "Consultor de Estrategia Junior",
-            "company": "Roland Berger / McKinsey",
-            "location": "Bogot\u00e1 / Mexico City",
-            "description": "An\u00e1lisis de mercados y modelos financieros. Excel avanzado y frameworks de resoluci\u00f3n de problemas.",
+            "id": "j5",
+            "role": "Analista de Datos Jr",
+            "company": "NuBank",
+            "location": "Bogot\u00e1",
+            "description": " an\u00e1lisis exploratorio para inclusi\u00f3n financiera. SQL indispensable.",
             "skills": [
-                "Strategy",
-                "Excel",
-                "English"
+                "SQL",
+                "Visualizaci\u00f3n",
+                "Python"
             ],
-            "salary": "$9M - $14M COP",
-            "link": "https://www.rolandberger.com/en/Join/All-Jobs/"
+            "salary": "$6M - $9M COP",
+            "link": "https://nubank.com.br/en/careers/"
         }
     ],
     "cursos": [
         {
-            "id": 1,
-            "title": "Crash Course in Causality: Inferring Causal Effects",
+            "id": "c1",
+            "title": "Crash Course in Causality",
             "platform": "Coursera (UPenn)",
-            "type": "Fundamental",
-            "description": "El curso indispensable. Aprende Matching, IV y Propensity Scores con R.",
+            "type": "Theory",
+            "description": "Entiende DAGs, Confounders y Matching. Fundamental para economistas modernos.",
             "duration": "5 semanas",
             "link": "https://www.coursera.org/learn/crash-course-in-causality",
             "tags": [
                 "Causal Inference",
                 "R",
-                "Must Have"
+                "Essential"
             ]
         },
         {
-            "id": 2,
-            "title": "MicroMasters in Data, Economics, and Development Policy",
-            "platform": "edX (MIT)",
-            "type": "Avanzado",
-            "description": "Dise\u00f1ado por Esther Duflo. El est\u00e1ndar de oro para economistas del desarrollo modernos.",
-            "duration": "6-12 meses",
-            "link": "https://micromasters.mit.edu/dedp/",
+            "id": "c2",
+            "title": "Data Science for Economists",
+            "platform": "Harvard (Online)",
+            "type": "Applied",
+            "description": "Curso espec\u00edfico para migrar de Stata a R/Python manteniendo el rigor econ\u00f3mico.",
+            "duration": "8 semanas",
+            "link": "https://online-learning.harvard.edu/",
             "tags": [
-                "MIT",
-                "Development",
+                "Python",
+                "R",
+                "Transition"
+            ]
+        },
+        {
+            "id": "c3",
+            "title": "SQL for Data Science",
+            "platform": "Coursera (UC Davis)",
+            "type": "Technical",
+            "description": "La habilidad t\u00e9cnica n\u00famero 1 m\u00e1s pedida en la industria fuera de la academia.",
+            "duration": "4 semanas",
+            "link": "https://www.coursera.org/learn/sql-for-data-science",
+            "tags": [
+                "SQL",
+                "Employability"
+            ]
+        },
+        {
+            "id": "c4",
+            "title": "Machine Learning for Economists",
+            "platform": "Susan Athey (Stanford)",
+            "type": "Advanced",
+            "description": "Recursos avanzados sobre Causal Forests y ML aplicado a pol\u00edticas.",
+            "duration": "Self-paced",
+            "link": "https://github.com/grf-labs/grf",
+            "tags": [
+                "ML",
+                "Research",
                 "Advanced"
             ]
         },
         {
-            "id": 3,
-            "title": "Machine Learning for Economists",
-            "platform": "Causal ML (Susan Athey)",
-            "type": "Especializado",
-            "description": "Recursos y papers para aplicar ML a problemas de econom\u00eda (Causal Forests, etc).",
-            "duration": "Self-paced",
-            "link": "https://github.com/grf-labs/grf",
+            "id": "c5",
+            "title": "Full Stack Web Development",
+            "platform": "The Odin Project",
+            "type": "Dev",
+            "description": "Si quieres construir tus propias herramientas y apps desde cero. Gratis y completo.",
+            "duration": "6 meses",
+            "link": "https://www.theodinproject.com/",
             "tags": [
-                "Python",
-                "R",
-                "Cutting Edge"
-            ]
-        },
-        {
-            "id": 4,
-            "title": "SQL for Data Science",
-            "platform": "Coursera (UC Davis)",
-            "type": "T\u00e9cnico",
-            "description": "La habilidad #1 que te falta para pasar filtros t\u00e9cnicos en empresas tech.",
-            "duration": "4 semanas",
-            "link": "https://www.coursera.org/learn/sql-for-data-science",
-            "tags": [
-                "Tech",
-                "SQL",
-                "Empleabilidad"
+                "Dev",
+                "Free",
+                "Builder"
             ]
         }
     ]

@@ -1,124 +1,124 @@
 export const calculateMatchScore = (profile, opportunity) => {
     let score = 0;
     let maxScore = 0;
+    let reasons = [];
+
     const weights = {
-        software: 0.3,
-        skills: 0.2,
-        interests: 0.3,
-        preferences: 0.2
+        software: 0.25,
+        interests: 0.25,
+        preferences: 0.30, // Higher weight for 'Ser'
+        skills: 0.20
     };
 
-    // 1. Software Match (30%)
+    // 1. Preferencias (El Ser / Purpose) - 30%
+    if (profile.preferences) {
+        let prefScore = 0;
+        let prefMax = 100; // Base
+
+        // SECTOR MATCH
+        if (profile.preferences.sector && profile.preferences.sector.length > 0) {
+            const opportunityTags = [opportunity.type, ...(opportunity.tags || [])].map(t => t.toLowerCase());
+            const sectorMatch = profile.preferences.sector.some(sec =>
+                opportunityTags.some(tag => tag.includes(sec)) ||
+                (sec === 'public' && (opportunityTags.includes('policy') || opportunityTags.includes('government'))) ||
+                (sec === 'startup' && (opportunityTags.includes('tech') || opportunityTags.includes('innovation'))) ||
+                (sec === 'academia' && (opportunityTags.includes('research') || opportunityTags.includes('phd')))
+            );
+
+            if (sectorMatch) {
+                prefScore += 50;
+                reasons.push("Coincide con tu entorno preferido (" + profile.preferences.sector.join('/') + ")");
+            }
+        } else {
+            prefScore += 25; // Neutral
+        }
+
+        // SALARY vs IMPACT
+        // Heuristic: If salary preference is high (>70), prioritize Corporate/High Salary locs
+        // If low (<30), prioritize NGO/Research/Policy
+        if (profile.preferences.salary > 70) {
+            if (opportunity.tags?.includes('Finance') || opportunity.tags?.includes('Corporate') || (opportunity.salary && opportunity.salary.includes('15M'))) {
+                prefScore += 50;
+                reasons.push("Alineado a tu expectativa salarial alta");
+            }
+        } else if (profile.preferences.salary < 30) {
+            if (opportunity.type === 'Policy/Research' || opportunity.tags?.includes('NGO') || opportunity.tags?.includes('Social')) {
+                prefScore += 50;
+                reasons.push("Alineado a tu propósito de impacto social");
+            }
+        } else {
+            prefScore += 30; // Balance
+        }
+
+        score += (prefScore / prefMax) * weights.preferences * 100;
+        maxScore += weights.preferences * 100;
+    }
+
+    // 2. Software (El Hacer) - 25%
     if (opportunity.requirements?.software) {
-        let softwareScore = 0;
-        let softwareMax = 0;
+        let softScore = 0;
+        let softMax = 0;
 
         Object.entries(opportunity.requirements.software).forEach(([tool, minLevel]) => {
+            softMax += 3;
             const userLevel = profile.software[tool]?.level || 0;
-            const weight = 1; // Can be adjustable
-            softwareMax += weight * 3; // Max level is 3
-
-            // Penalize if below requirement, reward if meets/exceeds
             if (userLevel >= minLevel) {
-                softwareScore += weight * 3; // Full match
+                softScore += 3;
+                if (!reasons.includes(`Tu nivel de ${tool} es ideal`)) reasons.push(`Tu nivel de ${tool} es ideal`);
             } else {
-                softwareScore += weight * userLevel; // Partial credit
+                softScore += userLevel;
             }
         });
 
-        if (softwareMax > 0) {
-            score += (softwareScore / softwareMax) * weights.software * 100;
+        if (softMax > 0) {
+            score += (softScore / softMax) * weights.software * 100;
             maxScore += weights.software * 100;
         }
     }
 
-    // 2. Skills Match (20%)
-    if (opportunity.requirements?.skills) {
-        // Similar logic for skills...
-        let skillsScore = 0;
-        let skillsMax = 0;
-
-        Object.entries(opportunity.requirements.skills).forEach(([skill, minLevel]) => {
-            const userLevel = profile.skills[skill] || 0;
-            skillsMax += 3;
-            if (userLevel >= minLevel) skillsScore += 3;
-            else skillsScore += userLevel;
-        });
-
-        if (skillsMax > 0) {
-            score += (skillsScore / skillsMax) * weights.skills * 100;
-            maxScore += weights.skills * 100;
+    // 3. Interests (El Saber/Querer) - 25%
+    if (opportunity.tags || opportunity.type) {
+        let intScore = 0;
+        // Check for matches
+        if (profile.interests.research && (opportunity.tags?.includes('Research') || opportunity.type === 'Research')) {
+            intScore += 1;
+            reasons.push("Fuerte componente de investigación");
         }
-    }
-
-    // 3. Interests Match (30%)
-    // Check if opportunity "tags" or "type" matches user interests
-    if (opportunity.type || opportunity.tags) {
-        let interestScore = 0;
-        // Simple heuristic: if profile interest is true, and opportunity tags match related keywords
-
-        if (profile.interests.publicPolicy && (opportunity.type === 'Policy' || opportunity.tags?.includes('Policy'))) interestScore += 1;
-        if (profile.interests.tech && (opportunity.type === 'Tech-Economist' || opportunity.tags?.includes('Tech'))) interestScore += 1;
-        if (profile.interests.research && (opportunity.type === 'Research' || opportunity.tags?.includes('Research'))) interestScore += 1;
-        if (profile.interests.finance && (opportunity.type === 'Corporate' || opportunity.tags?.includes('Finance'))) interestScore += 1;
-
-        // Normalize: if at least one match found, give full points for this section (simplified)
-        if (interestScore > 0) score += weights.interests * 100;
-        maxScore += weights.interests * 100; // Always count this bucket
-    }
-
-    // 4. Preferences (20%)
-    // Salary vs Impact, Remote, etc.
-    let prefScore = 0;
-
-    // Salary check (heuristic)
-    if (opportunity.salary) {
-        // Parse salary from string like "$12M - $18M COP" -> avg 15
-        const salaryText = opportunity.salary;
-        // This is complex to parse strictly without cleaner data, implementing a placeholder logic
-        // If user wants high salary (>70) and job matches high salary keywords or is Corporate/Tech
-        if (profile.preferences.salary > 70) {
-            if (opportunity.tags?.includes('Tech') || opportunity.tags?.includes('Finance') || opportunity.salary.includes('15M') || opportunity.salary.includes('18M')) {
-                prefScore += 50;
-            }
-        } else {
-            prefScore += 50; // Neutral or low salary preference is easier to satisfy
+        if (profile.interests.tech && (opportunity.tags?.includes('Tech') || opportunity.type.includes('Tech'))) {
+            intScore += 1;
+            reasons.push("Enfoque tecnológico que buscas");
         }
-    } else {
-        prefScore += 50; // No salary info, give benefit of doubt
+        if (profile.interests.publicPolicy && (opportunity.tags?.includes('Policy') || opportunity.type.includes('Policy'))) {
+            intScore += 1;
+            reasons.push("Impacto en política pública");
+        }
+
+        if (intScore > 0) score += weights.interests * 100;
+        else score += 20; // Base overlap
+        maxScore += weights.interests * 100;
     }
 
-    // Remote check
-    if (opportunity.location) {
-        const isRemoteJob = opportunity.location.toLowerCase().includes('remoto');
-        const userWantsRemote = profile.preferences.remote === 'remote';
+    const finalScore = Math.min(100, Math.round(score));
+    // Limit reasons to top 2 distinctive ones
+    const explanation = reasons.slice(0, 2).join(". ") + ".";
 
-        if (userWantsRemote && isRemoteJob) prefScore += 50;
-        else if (!userWantsRemote) prefScore += 50; // Flexible
-        else if (userWantsRemote && !isRemoteJob) prefScore += 0;
-    }
-
-    score += (prefScore / 100) * weights.preferences * 100;
-    maxScore += weights.preferences * 100;
-
-    return Math.min(100, Math.round(score));
+    return { score: finalScore, explanation };
 };
 
 export const filterOpportunities = (profile, opportunities) => {
-    // 1. Calculate scores
-    const scoredMaps = {
-        maestrias: opportunities.maestrias.map(op => ({ ...op, score: calculateMatchScore(profile, op) })),
-        becas: opportunities.becas.map(op => ({ ...op, score: calculateMatchScore(profile, op) })), // Becas less strict
-        empleos: opportunities.empleos_simulados.map(op => ({ ...op, score: calculateMatchScore(profile, op) })),
-        cursos: opportunities.cursos.map(op => ({ ...op, score: 95 })), // Courses are usually good for everyone, simplified
+    // Helper to process a list
+    const processList = (list) => {
+        if (!list) return [];
+        return list.map(op => {
+            const { score, explanation } = calculateMatchScore(profile, op);
+            return { ...op, score, explanation };
+        }).sort((a, b) => b.score - a.score);
     };
 
-    // 2. Filter by threshold (e.g., > 60%) or Top N
-    // For now, return all sorted by score
     return {
-        maestrias: scoredMaps.maestrias.sort((a, b) => b.score - a.score),
-        becas: scoredMaps.becas,
-        empleos: scoredMaps.empleos.sort((a, b) => b.score - a.score),
-        cursos: scoredMaps.cursos
+        maestrias: processList(opportunities.maestrias),
+        becas: processList(opportunities.becas),
+        empleos: processList(opportunities.empleos_simulados),
+        cursos: processList(opportunities.cursos).map(c => ({ ...c, score: 95, explanation: "Curso fundamental para tu perfil." })) // Simplify courses
     };
 };

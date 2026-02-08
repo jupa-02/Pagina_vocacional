@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { useCareer } from './store/CareerContext';
 import WelcomeScreen from './components/WelcomeScreen';
 import Hero from './components/Hero';
-import SoftwareSelector from './components/Diagnosis/SoftwareSelector';
-import SkillsInterests from './components/Diagnosis/SkillsInterests';
-import WorkPreferences from './components/Diagnosis/WorkPreferences';
+import HolisticDiagnosis from './components/Diagnosis/HolisticDiagnosis';
 import ProfileCard from './components/Results/ProfileCard';
 import AgentsDashboard from './components/Results/AgentsDashboard';
 import { careerProfiles } from './data/profiles';
@@ -22,14 +20,19 @@ function App() {
     nextStep();
   };
 
+  // Holistic Diagnosis replaces steps 1-3
+  // Step 0: Hero
+  // Step 1: Holistic Diagnosis
+  // Step 2: Results (Profile Card)
+  // Step 3: Agents
+
   const renderStep = () => {
     switch (step) {
       case -1: return <WelcomeScreen onStart={nextStep} />;
       case 0: return <Hero onStart={nextStep} />;
-      case 1: return <SoftwareSelector />;
-      case 2: return <SkillsInterests />;
-      case 3: return <WorkPreferences />;
-      case 4:
+      case 1: return <HolisticDiagnosis onComplete={handleFinish} />;
+      // Removed old steps
+      case 2:
         const profileData = recommendedPath ? careerProfiles[recommendedPath] : null;
         return (
           <div className="py-8 space-y-8">
@@ -56,7 +59,7 @@ function App() {
             )}
           </div>
         );
-      case 5: return <AgentsDashboard />;
+      case 3: return <AgentsDashboard />;
       default: return <Hero onStart={nextStep} />;
     }
   };
@@ -77,7 +80,8 @@ function App() {
         {renderStep()}
       </main>
 
-      {step > 0 && step < 5 && (
+      {/* Navigation bar logic simplified for the new flow */}
+      {step > 0 && step < 3 && (
         <div className="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-slate-200 z-40 shadow-lg-up">
           <div className="max-w-4xl mx-auto flex justify-between items-center">
             <button
@@ -88,25 +92,11 @@ function App() {
               Atrás
             </button>
 
-            {step === 3 ? (
-              <button
-                onClick={handleFinish}
-                className="flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors shadow-md hover:shadow-lg"
-              >
-                Ver Resultados
-                <CheckCircle className="w-5 h-5" />
-              </button>
-            ) : step === 4 ? (
-              // Button is inside the renderStep for step 4 to clearly call to action
+            {/* Steps 1 (Diagnosis) handles its own 'Next' internally until finish */}
+            {/* But we can keep a manual override or just let the component handle it */}
+            {step === 2 && (
+              // Step 2 is Results, so next is Agents
               <span className="text-sm text-slate-400">Continúa arriba para ver empleos</span>
-            ) : (
-              <button
-                onClick={nextStep}
-                className="flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-slate-800 transition-colors shadow-md hover:shadow-lg"
-              >
-                Siguiente
-                <ArrowRight className="w-5 h-5" />
-              </button>
             )}
           </div>
         </div>
