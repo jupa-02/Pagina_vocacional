@@ -62,6 +62,7 @@ export function CareerProvider({ children }) {
             policyWonk: 0,
             corporative: 0,
             researcher: 0,
+            businessEconomist: 0,
         };
 
         // Tech Economist: Python/R + ML
@@ -86,6 +87,16 @@ export function CareerProvider({ children }) {
         if (profile.interests.research) scores.researcher += 4; // High weight on interest
         if (profile.skills.writing >= 2) scores.policyWonk += 1; // Also good for research
         if (profile.software.stata.level >= 2 || profile.software.r.level >= 2) scores.researcher += 1;
+
+        // Business Economist: Finance/Strategy + Corporate + Leadership (Using existing proxies)
+        // Ideally matches "Gestión Empresarial" + "Economía"
+        if (profile.interests.finance) scores.businessEconomist += 4;
+        if (profile.preferences.sector.includes('corporate') || profile.preferences.sector.includes('startup')) scores.businessEconomist += 2;
+        if (profile.software.excel.level >= 2) scores.businessEconomist += 1;
+
+        // Boost Business Economist for Caro's specific path if signals are ambiguous
+        // (If they chose 'Strategy' in Q1 and 'Corporate' in Q2)
+        if (profile.interests.finance && profile.preferences.sector.includes('corporate')) scores.businessEconomist += 2;
 
         // Find max score
         const maxScore = Math.max(...Object.values(scores));

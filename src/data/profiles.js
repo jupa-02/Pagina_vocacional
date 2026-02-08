@@ -10,6 +10,18 @@ export const careerProfiles = {
             { step: "Traducción", item: "En tu CV, cambia 'Econometría' por 'Causal Inference & A/B Testing'." }
         ]
     },
+    businessEconomist: {
+        title: "Business Economist",
+        tagline: "Donde la Gestión Empresarial encuentra la Teoría Económica",
+        description: "Tu perfil es único: combinas la capacidad de ejecución y liderazgo de la Gestión Empresarial con el rigor analítico de la Economía. Eres quien no solo entiende el mercado, sino que sabe cómo organizar la empresa para conquistarlo.",
+        tags: ["Gestión Empresarial", "Liderazgo", "Análisis de Datos", "Resolución de Problemas", "Estrategia"],
+        roadmap: [
+            { step: "Integración", item: "Usa tu background en Gestión para liderar equipos multidisciplinarios (Tech + Business)." },
+            { step: "Diferenciación", item: "Aplica modelos económicos a problemas de logística y planeación (tu fuerte)." },
+            { step: "Herramientas", item: "Domina herramientas de Business Intelligence (Tableau/PowerBI) para traducir datos en decisiones." },
+            { step: "Proyección", item: "Apunta a roles de 'Strategy & Operations' o 'Product Management'." }
+        ]
+    },
     policyWonk: {
         title: "Policy Wonk",
         description: "Diseñas el futuro de la sociedad. Tu enfoque está en el impacto público y la evaluación rigurosa de programas sociales.",

@@ -6,15 +6,17 @@ const mockOpportunities = {
     maestrias: [
         { id: 1, type: "Maestría", university: "LSE (London School of Economics)", program: "MSc Development Economics", score: 98, link: "https://www.lse.ac.uk/study-at-lse/Graduate", description: "Enfoque cuantitativo ideal para tu perfil técnico. Red de alumni en organismos multilaterales.", explanation: "Tu perfil 'Tech-Economist' encaja al 98% con el currículo de econometría aplicada." },
         { id: 2, type: "Maestría", university: "Universidad de los Andes", program: "Maestría en Economía (PEG)", score: 95, link: "https://economia.uniandes.edu.co/posgrados/maestria-en-economia", description: "La mejor opción local con proyección internacional. Convenios de doble titulación.", explanation: "Excelente si buscas mantener tu red local mientras profundizas en teoría." },
+        { id: 3, type: "MBA", university: "INSEAD", program: "Master in Business Administration", score: 99, link: "https://www.insead.edu/", description: "El programa número 1 para perfiles internacionales. Foco en estrategia global.", explanation: "Tu background en gestión empresarial es la base perfecta para este salto." },
     ],
     becas: [
         { id: 1, name: "Crédito Beca Colfuturo", entity: "Colfuturo", deadline: "28 Feb 2026", link: "https://www.colfuturo.org/", description: "Financiación de hasta 50k USD. Condonable hasta el 80%.", type: "Financiación" },
         { id: 2, name: "Beca Chevening", entity: "UK Govt", deadline: "Nov 2025", link: "https://www.chevening.org/", description: "Beca completa para estudiar un año en UK. Requiere 2 años de experiencia.", type: "Full Ride", explanation: "Tu experiencia en voluntariado suma puntos clave aquí." },
+        { id: 3, name: "Forté Foundation Fellowships", entity: "Forté", deadline: "Varies", link: "http://www.fortefoundation.org/", description: "Becas exclusivas para mujeres líderes en negocios.", type: "Liderazgo", explanation: "Diseñada para potenciar el liderazgo femenino en alta gerencia." },
     ],
     empleos: [
         { id: 1, role: "Data Scientist (Economics)", company: "NuBank", location: "Bogotá / Remoto", score: 94, skills: ["Python", "Causal Inference"], description: "Analizar comportamiento crediticio usando modelos estructurales.", explanation: "Buscan economistas que sepan programar (tu fuerte).", type: "Tech" },
         { id: 2, role: "Consultor Jr. Políticas Públicas", company: "Fedesarrollo", location: "Bogotá", score: 88, skills: ["Stata", "Redacción"], description: "Apoyo en investigación de mercado laboral y pensiones.", type: "Policy" },
-        { id: 3, role: "Research Assistant", company: "Banco de la República", location: "Bogotá", score: 91, skills: ["R", "Macroeconomía"], description: "Investigación económica pura. Ideal como puente al doctorado.", type: "Research" },
+        { id: 3, role: "Strategy Analyst", company: "McKinsey & Company", location: "Bogotá", score: 97, skills: ["Estrategia", "Problem Solving"], description: "Resolver problemas complejos de negocio para clientes top.", type: "Consultoría", explanation: "Tu perfil híbrido (Gestión + Economía) es oro aquí." },
     ],
     cursos: [
         { id: 1, title: "Microeconometrics with R", platform: "Coursera / Johns Hopkins", description: "Refuerza tus bases en R con aplicaciones modernas.", type: "Certificación", score: 99, explanation: "Cierra la brecha detectada en tu autodiagnóstico de R." },

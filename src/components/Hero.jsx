@@ -8,9 +8,12 @@ export default function Hero({ onStart }) {
             </div>
 
             <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6 leading-tight animate-fade-in-up delay-100 drop-shadow-xl">
-                Conecta tu pasión<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300">
-                    con el mundo real
+                Hola Caro ✨<br />
+                <span className="text-3xl md:text-5xl block mt-4 font-sans font-light text-indigo-100">
+                    Tu talento conecta
+                </span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-orange-200 to-pink-300 block mt-2">
+                    Economía y Gestión
                 </span>
             </h1>
 
