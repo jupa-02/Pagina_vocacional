@@ -1,34 +1,38 @@
 import { useState, useEffect } from 'react';
 import { Search, MapPin, Briefcase, GraduationCap, Award, BookOpen } from 'lucide-react';
-import { opportunities } from '../../data/opportunities';
+import opportunities from '../../data/opportunities.json';
 import { useCareer } from '../../store/CareerContext';
 // import { motion } from 'framer-motion'; // Removed motion to avoid build issues if it wasn't resolving correctly, or standard CSS is fine. Re-adding for consistency.
 import { motion } from 'framer-motion';
+import { filterOpportunities } from '../../utils/matchingEngine';
 
 export default function AgentsDashboard() {
-    const { recommendedPath } = useCareer();
+    const { profile, recommendedPath } = useCareer(); // Get profile
     const [loading, setLoading] = useState(true);
     const [activeMessage, setActiveMessage] = useState('Iniciando búsqueda...');
-
-    // Filter logic placeholder - in a real app this would use the profile
-    const relevantMasters = opportunities?.maestrias || [];
-    const relevantScholarships = opportunities?.becas || [];
-    const relevantJobs = opportunities?.empleos_simulados || [];
-    const relevantCourses = opportunities?.cursos || [];
+    const [results, setResults] = useState({ maestrias: [], becas: [], empleos: [], cursos: [] });
 
     useEffect(() => {
         const sequence = async () => {
             setLoading(true);
-            setActiveMessage('Escaneando universidades Top Tier...');
-            await new Promise(r => setTimeout(r, 1500));
-            setActiveMessage('Filtrando becas compatibles con tu perfil...');
-            await new Promise(r => setTimeout(r, 1500));
-            setActiveMessage('Buscando vacantes ocultas en el mercado laboral...');
-            await new Promise(r => setTimeout(r, 1500));
+            setActiveMessage('Analizando tus vectores de preferencia...');
+            await new Promise(r => setTimeout(r, 1000));
+
+            const filtered = filterOpportunities(profile, opportunities);
+            setResults(filtered);
+
+            setActiveMessage('Buscando oportunidades con >80% de Match...');
+            await new Promise(r => setTimeout(r, 1000));
             setLoading(false);
         };
         sequence();
-    }, []);
+    }, [profile]);
+
+    // Use the filtered results
+    const relevantMasters = results.maestrias;
+    const relevantScholarships = results.becas; // Becas
+    const relevantJobs = results.empleos;
+    const relevantCourses = results.cursos;
 
     if (loading) {
         return (
@@ -64,7 +68,7 @@ export default function AgentsDashboard() {
                             <div className="relative z-10">
                                 <div className="flex justify-between items-start mb-3">
                                     <span className="bg-indigo-50 text-indigo-700 text-[10px] font-extrabold px-2 py-1 rounded uppercase tracking-wider border border-indigo-100">{master.type}</span>
-                                    <span className="text-slate-400 text-xs font-medium flex items-center gap-1"><MapPin size={12} /> {master.country}</span>
+                                    {master.score && <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full border border-green-200">{master.score}% Match</span>}
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">{master.program}</h3>
                                 <p className="text-indigo-900 font-medium text-sm mb-3">{master.university}</p>
@@ -150,7 +154,7 @@ export default function AgentsDashboard() {
                             <div className="flex-1">
                                 <div className="flex items-center gap-3 mb-1">
                                     <h3 className="text-lg font-bold text-slate-900">{job.role}</h3>
-                                    <span className="bg-teal-50 text-teal-700 text-xs font-bold px-2 py-0.5 rounded border border-teal-100">NUEVO</span>
+                                    {job.score && <span className="bg-teal-50 text-teal-700 text-xs font-bold px-2 py-0.5 rounded border border-teal-100">{job.score}% Match</span>}
                                 </div>
                                 <p className="text-slate-600 text-sm font-medium mb-2">{job.company} • {job.location}</p>
                                 <p className="text-slate-500 text-sm mb-3">{job.description}</p>

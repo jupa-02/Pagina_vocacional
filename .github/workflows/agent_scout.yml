@@ -1,0 +1,28 @@
+name: Career Agent Scout
+
+on:
+  schedule:
+    - cron: '0 8 * * *' # Runs daily at 8:00 UTC
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  scout-opportunities:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Run Career Agent Script
+      run: node scripts/career_agent.js
+      
+    - name: Commit and Push if changed
+      run: |
+        git config --global user.name 'Career Agent Bot'
+        git config --global user.email 'agent@careerhub.ai'
+        git add src/data/opportunities.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "🤖 Agent: Found new opportunities" && git push)

@@ -23,6 +23,12 @@ export function CareerProvider({ children }) {
             tech: false,
             research: false,
             international: false,
+        },
+        preferences: {
+            salary: 50, // 0-100 slider (Impact vs Money)
+            workLifeBalance: 50, // 0-100 (Grind vs Balance)
+            remote: 'hybrid', // remote, hybrid, onsite
+            sector: [], // startup, corporate, public, academia
         }
     });
 

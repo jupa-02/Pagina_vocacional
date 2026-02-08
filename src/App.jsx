@@ -4,6 +4,7 @@ import WelcomeScreen from './components/WelcomeScreen';
 import Hero from './components/Hero';
 import SoftwareSelector from './components/Diagnosis/SoftwareSelector';
 import SkillsInterests from './components/Diagnosis/SkillsInterests';
+import WorkPreferences from './components/Diagnosis/WorkPreferences';
 import ProfileCard from './components/Results/ProfileCard';
 import AgentsDashboard from './components/Results/AgentsDashboard';
 import { careerProfiles } from './data/profiles';
@@ -27,7 +28,8 @@ function App() {
       case 0: return <Hero onStart={nextStep} />;
       case 1: return <SoftwareSelector />;
       case 2: return <SkillsInterests />;
-      case 3:
+      case 3: return <WorkPreferences />;
+      case 4:
         const profileData = recommendedPath ? careerProfiles[recommendedPath] : null;
         return (
           <div className="py-8 space-y-8">
@@ -54,7 +56,7 @@ function App() {
             )}
           </div>
         );
-      case 4: return <AgentsDashboard />;
+      case 5: return <AgentsDashboard />;
       default: return <Hero onStart={nextStep} />;
     }
   };
@@ -65,8 +67,8 @@ function App() {
         <span className="font-bold text-xl tracking-tight text-slate-800">CareerHub</span>
         {step > 0 && step < 3 && (
           <div className="flex gap-2">
-            <div className={`h-2 w-8 rounded-full ${step >= 1 ? 'bg-indigo-600' : 'bg-slate-200'}`}></div>
-            <div className={`h-2 w-8 rounded-full ${step >= 2 ? 'bg-indigo-600' : 'bg-slate-200'}`}></div>
+            <div className={`h - 2 w - 8 rounded - full ${step >= 1 ? 'bg-indigo-600' : 'bg-slate-200'} `}></div>
+            <div className={`h - 2 w - 8 rounded - full ${step >= 2 ? 'bg-indigo-600' : 'bg-slate-200'} `}></div>
           </div>
         )}
       </nav>
@@ -75,7 +77,7 @@ function App() {
         {renderStep()}
       </main>
 
-      {step > 0 && step < 4 && (
+      {step > 0 && step < 5 && (
         <div className="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-slate-200 z-40 shadow-lg-up">
           <div className="max-w-4xl mx-auto flex justify-between items-center">
             <button
@@ -86,7 +88,7 @@ function App() {
               Atrás
             </button>
 
-            {step === 2 ? (
+            {step === 3 ? (
               <button
                 onClick={handleFinish}
                 className="flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors shadow-md hover:shadow-lg"
@@ -94,8 +96,8 @@ function App() {
                 Ver Resultados
                 <CheckCircle className="w-5 h-5" />
               </button>
-            ) : step === 3 ? (
-              // Button is inside the renderStep for step 3 to clearly call to action
+            ) : step === 4 ? (
+              // Button is inside the renderStep for step 4 to clearly call to action
               <span className="text-sm text-slate-400">Continúa arriba para ver empleos</span>
             ) : (
               <button
