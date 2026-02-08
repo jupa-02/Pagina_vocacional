@@ -74,7 +74,7 @@ function App() {
 
       <nav className="relative z-40 p-6 flex justify-between items-center max-w-6xl mx-auto">
         <span className="font-serif font-bold text-2xl tracking-tight text-white drop-shadow-md">
-          Career<span className="text-indigo-400">Hub</span>
+          Caro <span className="text-indigo-400">✨</span>
         </span>
         {step > 0 && step < 3 && (
           <div className="flex gap-2">
