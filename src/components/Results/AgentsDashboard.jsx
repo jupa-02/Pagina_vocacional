@@ -30,41 +30,52 @@ export default function AgentsDashboard() {
         const filterByTag = (items) => {
             if (!items) return [];
 
+            const path = recommendedPath.toLowerCase().trim();
+
             // 1. Strict Match
             let matches = items.filter(item =>
-                item.tags && (item.tags.includes(recommendedPath) || item.tags.includes('all'))
+                item.tags && (item.tags.some(t => t.toLowerCase() === path) || item.tags.includes('all'))
             );
 
-            // 2. Fallback if not enough matches (less than 2)
+            // 2. Fallback: Related Profiles
             if (matches.length < 2) {
-                const backups = relatedProfiles[recommendedPath] || [];
+                const backups = relatedProfiles[path] || [];
                 const backupMatches = items.filter(item =>
                     item.tags && item.tags.some(t => backups.includes(t))
                 );
-                // Merge unique items
                 matches = [...matches, ...backupMatches.filter(b => !matches.find(m => m.id === b.id))];
+            }
+
+            // 3. Ultimate Fallback: Show Top 3 Generic Items if still empty
+            if (matches.length === 0) {
+                console.warn(`No matches found for ${path} in category. Using generic fallback.`);
+                matches = items.slice(0, 3);
             }
 
             return matches.slice(0, 3);
         };
 
         const getAIExplanation = (itemTags) => {
-            if (!itemTags || !recommendedPath) return null;
+            if (!itemTags || !recommendedPath) return "Oportunidad general recomendada.";
+
+            const path = recommendedPath.toLowerCase().trim();
+            const isDirectMatch = itemTags.some(t => t.toLowerCase() === path);
 
             const matchTemplates = [
-                `🎯 Tu perfil ${recommendedPath} es ideal para esto.`,
-                `🚀 Potencia tus habilidades de ${recommendedPath}.`,
-                `✨ Seleccionado por nuestro algoritmo para ${recommendedPath}.`,
+                `🎯 Tu perfil ${path} es ideal para esto.`,
+                `🚀 Potencia tus habilidades de ${path}.`,
+                `✨ Seleccionado por nuestro algoritmo para ${path}.`,
                 `💡 Alta afinidad con tus intereses detectados.`
             ];
 
             const generalTemplates = [
                 "💎 Una oportunidad de alto valor curricular.",
                 "🔥 Altamente demandado en el mercado actual.",
-                "🌟 Recomendado para perfiles de liderazgo."
+                "🌟 Recomendado para perfiles de liderazgo.",
+                "⚡ Oportunidad destacada por nuestros agentes."
             ];
 
-            if (itemTags.includes(recommendedPath)) {
+            if (isDirectMatch) {
                 return matchTemplates[Math.floor(Math.random() * matchTemplates.length)];
             }
             return generalTemplates[Math.floor(Math.random() * generalTemplates.length)];
