@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useCareer } from '../../store/CareerContext';
-import { ArrowRight, Brain, Heart, Briefcase, BookOpen, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const questions = [
@@ -98,41 +97,43 @@ export default function HolisticDiagnosis({ onComplete }) {
     const question = questions[currentQ];
 
     return (
-        <div className="max-w-2xl mx-auto py-12 px-6">
-            <div className="mb-8">
-                <span className="text-xs font-bold tracking-widest text-indigo-500 uppercase mb-2 block">
-                    Dimensión: {question.dimension}
-                </span>
-                <h2 className="text-3xl font-serif text-slate-900 leading-tight">
-                    {question.question}
-                </h2>
-                <div className="w-full bg-slate-100 h-1 mt-6 rounded-full overflow-hidden">
-                    <motion.div
-                        className="h-full bg-indigo-600"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
-                    />
+        <div className="max-w-2xl mx-auto py-12 px-6 relative z-10">
+            {/* Glass Container */}
+            <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl">
+                <div className="mb-8">
+                    <span className="text-xs font-bold tracking-widest text-indigo-300 uppercase mb-2 block">
+                        Dimensión: {question.dimension}
+                    </span>
+                    <h2 className="text-3xl font-serif text-white leading-tight drop-shadow-md">
+                        {question.question}
+                    </h2>
+                    <div className="w-full bg-white/10 h-1.5 mt-6 rounded-full overflow-hidden">
+                        <motion.div
+                            className="h-full bg-indigo-400 shadow-[0_0_10px_#818cf8]"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
+                        />
+                    </div>
                 </div>
-            </div>
 
-            <div className="space-y-4">
-                <AnimatePresence mode="wait">
-                    {question.options.map((opt, idx) => (
-                        <motion.button
-                            key={opt.id}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ delay: idx * 0.1 }}
-                            onClick={() => handleAnswer(opt)}
-                            className="w-full text-left p-6 rounded-xl border border-slate-200 hover:border-indigo-500 hover:bg-slate-50 transition-all group group-hover:shadow-md bg-white"
-                        >
-                            <span className="text-lg text-slate-700 group-hover:text-slate-900 font-medium">
-                                {opt.label}
-                            </span>
-                        </motion.button>
-                    ))}
-                </AnimatePresence>
+                <div className="space-y-4">
+                    <AnimatePresence mode="wait">
+                        {question.options.map((opt, idx) => (
+                            <motion.button
+                                key={opt.id}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.1 }}
+                                onClick={() => handleAnswer(opt)}
+                                className="w-full text-left p-6 rounded-xl border border-white/10 hover:border-indigo-400/50 hover:bg-white/20 transition-all group bg-white/5 active:scale-[0.98]"
+                            >
+                                <span className="text-lg text-indigo-50 group-hover:text-white font-medium transition-colors">
+                                    {opt.label}
+                                </span>
+                            </motion.button>
+                        ))}
+                    </AnimatePresence>
+                </div>
             </div>
         </div>
     );

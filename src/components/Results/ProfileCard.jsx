@@ -1,60 +1,79 @@
-import { Share2, Download, BookOpen, User } from 'lucide-react';
+import { Map, Briefcase, BookOpen, User, Star } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function ProfileCard({ profileData }) {
     if (!profileData) return null;
 
     return (
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden max-w-4xl mx-auto border border-slate-100">
-            <div className="bg-indigo-600 p-8 text-white relative overflow-hidden">
+        <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="rounded-3xl overflow-hidden shadow-2xl bg-white/10 backdrop-blur-xl border border-white/20 text-white"
+        >
+            {/* Header Section */}
+            <div className="bg-gradient-to-r from-indigo-600/50 to-purple-600/50 p-8 text-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-white/5 opacity-50 backdrop-blur-sm"></div>
                 <div className="relative z-10">
-                    <div className="text-indigo-200 text-sm font-semibold uppercase tracking-wider mb-2">Tu Perfil de Mercado</div>
-                    <h2 className="text-4xl font-bold mb-4">{profileData.title}</h2>
-                    <p className="text-indigo-100 text-lg max-w-2xl">{profileData.description}</p>
-                </div>
-                <div className="absolute top-0 right-0 p-8 opacity-10">
-                    <User size={200} />
+                    <div className="w-20 h-20 bg-white/20 rounded-full mx-auto flex items-center justify-center mb-4 shadow-inner ring-1 ring-white/30">
+                        <User size={40} className="text-white" />
+                    </div>
+                    <h2 className="text-3xl font-serif font-bold mb-2">{profileData.title}</h2>
+                    <p className="text-indigo-100 italic text-lg opacity-90">{profileData.tagline}</p>
                 </div>
             </div>
 
-            <div className="p-8">
-                <div className="flex flex-wrap gap-2 mb-8">
-                    {profileData.tags.map((tag, i) => (
-                        <span key={i} className="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-sm font-medium">
-                            {tag}
-                        </span>
-                    ))}
+            {/* Body Section */}
+            <div className="p-8 space-y-8">
+                {/* Mission */}
+                <div>
+                    <h3 className="text-sm font-bold text-indigo-300 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <Map size={16} /> Tu Misión
+                    </h3>
+                    <p className="text-slate-200 leading-relaxed font-light text-lg">
+                        {profileData.description}
+                    </p>
                 </div>
 
-                <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                    <BookOpen className="w-6 h-6 text-indigo-600" />
-                    Tu Hoja de Ruta Personalizada
-                </h3>
-
-                <div className="space-y-6">
-                    {profileData.roadmap.map((item, index) => (
-                        <div key={index} className="flex gap-4 items-start group">
-                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm mt-1 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                                {index + 1}
-                            </div>
-                            <div>
-                                <h4 className="font-semibold text-slate-900 text-lg">{item.step}</h4>
-                                <p className="text-slate-600">{item.item}</p>
-                            </div>
+                {/* Grid: Superpowers & Roadmap */}
+                <div className="grid md:grid-cols-2 gap-6">
+                    {/* Superpowers */}
+                    <div className="bg-white/5 p-5 rounded-2xl border border-white/10">
+                        <h4 className="font-bold text-white mb-3 flex items-center gap-2">
+                            <Star size={18} className="text-yellow-400" /> Superpoderes
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                            {profileData.tags.map(tag => (
+                                <span key={tag} className="bg-indigo-500/30 text-indigo-100 text-xs px-3 py-1 rounded-full border border-indigo-400/30">
+                                    {tag}
+                                </span>
+                            ))}
                         </div>
-                    ))}
+                    </div>
+
+                    {/* Roadmap Steps */}
+                    <div className="bg-white/5 p-5 rounded-2xl border border-white/10">
+                        <h4 className="font-bold text-white mb-3 flex items-center gap-2">
+                            <BookOpen size={18} className="text-pink-400" /> Ruta de Aprendizaje
+                        </h4>
+                        <ul className="text-sm space-y-2 text-slate-300">
+                            {profileData.roadmap.map((step, i) => (
+                                <li key={i} className="flex gap-2">
+                                    <span className="text-indigo-400 font-bold">{i + 1}.</span>
+                                    {step}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
 
-                <div className="mt-10 pt-8 border-t border-slate-100 flex gap-4">
-                    <button className="flex-1 bg-slate-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
-                        <Download className="w-5 h-5" />
-                        Descargar Roadmap
-                    </button>
-                    <button className="px-6 py-3 rounded-lg font-semibold text-slate-600 hover:bg-slate-50 transition-colors border border-slate-200 flex items-center gap-2">
-                        <Share2 className="w-5 h-5" />
-                        Compartir
+                {/* Footer Actions */}
+                <div className="mt-10 pt-8 border-t border-white/10 flex gap-4">
+                    <button className="flex-1 bg-white text-indigo-900 px-6 py-3 rounded-xl font-bold hover:bg-indigo-50 transition-colors flex items-center justify-center gap-2 shadow-lg">
+                        <Map size={18} />
+                        Ver Roadmap Detallado
                     </button>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
