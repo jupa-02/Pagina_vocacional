@@ -3,110 +3,103 @@ import { createContext, useContext, useState } from 'react';
 const CareerContext = createContext();
 
 export function CareerProvider({ children }) {
-    const [profile, setProfile] = useState({
-        name: '',
-        software: {
-            r: { level: 0, libraries: [] }, // 0: None, 1: Basic, 2: Intermediate, 3: Advanced
-            python: { level: 0, libraries: [] },
-            stata: { level: 0 },
-            excel: { level: 0 },
-        },
-        skills: {
-            causalInference: 0, // 0-3 scale
-            machineLearning: 0,
-            writing: 0,
-            english: 0,
-        },
-        interests: {
-            publicPolicy: false,
-            finance: false,
-            tech: false,
-            research: false,
-            international: false,
-        },
-        preferences: {
-            salary: 50, // 0-100 slider (Impact vs Money)
-            workLifeBalance: 50, // 0-100 (Grind vs Balance)
-            remote: 'hybrid', // remote, hybrid, onsite
-            sector: [], // startup, corporate, public, academia
-        }
+    const [scores, setScores] = useState({
+        // RIASEC
+        realistic: 0,
+        investigative: 0,
+        artistic: 0,
+        social: 0,
+        enterprising: 0,
+        conventional: 0,
+        // Ikigai Skills
+        analytical: 0,
+        creative: 0,
+        management: 0,
+        // Values
+        social_impact: 0,
+        wealth: 0,
+        innovation: 0,
+        stability: 0,
+        corporate: 0,
+        academic: 0,
+        field: 0,
+        remote: 0,
+        risk_taker: 0,
+        passion: 0,
+        freelance: 0,
+        solo: 0,
+        team_small: 0,
+        team_lead: 0,
+        networker: 0
     });
 
     const [recommendedPath, setRecommendedPath] = useState(null);
 
-    const updateProfile = (section, key, value) => {
-        setProfile(prev => {
-            // Deep merge logic if needed, but for now simple 2-level
-            // If value is an object (like {level: 3}), merge it
-            const currentSection = prev[section] || {};
-            const currentValue = currentSection[key];
-
-            let newValue = value;
-            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-                newValue = { ...currentValue, ...value };
-            }
-
-            return {
-                ...prev,
-                [section]: {
-                    ...prev[section],
-                    [key]: newValue
-                }
-            };
-        });
+    const updateScore = (dimension, weight) => {
+        setScores(prev => ({
+            ...prev,
+            [dimension]: (prev[dimension] || 0) + weight
+        }));
     };
+
     const calculatePath = () => {
-        // Logic to determine path based on granular profile
-        let scores = {
-            techEconomist: 0,
-            policyWonk: 0,
-            corporative: 0,
-            researcher: 0,
-            businessEconomist: 0,
+        // Define archetypes and their required score mix
+        const archetypes = {
+            techEconomist: {
+                investigative: 3,
+                analytical: 5,
+                innovation: 2,
+                tech: 3 // implied
+            },
+            businessEconomist: {
+                enterprising: 4,
+                conventional: 2,
+                management: 3,
+                corporate: 2,
+                wealth: 2
+            },
+            policyWonk: {
+                social: 3,
+                investigative: 3,
+                social_impact: 4,
+                writing: 2 // implied
+            },
+            researcher: {
+                investigative: 5,
+                academic: 4,
+                analytical: 3,
+                solo: 2
+            },
+            corporative: {
+                conventional: 4,
+                enterprising: 2,
+                stability: 3,
+                corporate: 4
+            }
         };
 
-        // Tech Economist: Python/R + ML
-        if (profile.software.python.level >= 2) scores.techEconomist += 3;
-        if (profile.software.r.level >= 2) scores.techEconomist += 2;
-        if (profile.skills.machineLearning >= 2) scores.techEconomist += 3;
-        if (profile.interests.tech) scores.techEconomist += 2;
+        // Score each archetype against the user's scores
+        let bestFit = 'businessEconomist'; // Default fallback
+        let maxMatchScore = -1;
 
-        // Policy Wonk: Stata/R + Public Policy + Writing
-        if (profile.interests.publicPolicy) scores.policyWonk += 3;
-        if (profile.software.stata.level >= 2) scores.policyWonk += 2;
-        if (profile.software.r.level >= 1) scores.policyWonk += 1; // R is growing in policy
-        if (profile.skills.writing >= 2) scores.policyWonk += 2;
-        if (profile.interests.international) scores.policyWonk += 1;
+        Object.entries(archetypes).forEach(([key, requirements]) => {
+            let matchScore = 0;
+            Object.entries(requirements).forEach(([dim, weight]) => {
+                // Add the user's score for this dimension * the weight importance
+                matchScore += (scores[dim] || 0) * weight;
+            });
 
-        // Corporate: Excel + Finance
-        if (profile.interests.finance) scores.corporative += 3;
-        if (profile.software.excel.level >= 3) scores.corporative += 2; // Advanced Excel is key
-        if (profile.skills.english >= 2) scores.corporative += 1;
-
-        // Researcher: Research interest + Theory + Math (implied by high stats skills)
-        if (profile.interests.research) scores.researcher += 4; // High weight on interest
-        if (profile.skills.writing >= 2) scores.policyWonk += 1; // Also good for research
-        if (profile.software.stata.level >= 2 || profile.software.r.level >= 2) scores.researcher += 1;
-
-        // Business Economist: Finance/Strategy + Corporate + Leadership (Using existing proxies)
-        // Ideally matches "Gestión Empresarial" + "Economía"
-        if (profile.interests.finance) scores.businessEconomist += 4;
-        if (profile.preferences.sector.includes('corporate') || profile.preferences.sector.includes('startup')) scores.businessEconomist += 2;
-        if (profile.software.excel.level >= 2) scores.businessEconomist += 1;
-
-        // Boost Business Economist for Caro's specific path if signals are ambiguous
-        // (If they chose 'Strategy' in Q1 and 'Corporate' in Q2)
-        if (profile.interests.finance && profile.preferences.sector.includes('corporate')) scores.businessEconomist += 2;
-
-        // Find max score
-        const maxScore = Math.max(...Object.values(scores));
-        const bestFit = Object.keys(scores).find(key => scores[key] === maxScore);
+            if (matchScore > maxMatchScore) {
+                maxMatchScore = matchScore;
+                bestFit = key;
+            }
+        });
 
         setRecommendedPath(bestFit);
     };
 
     return (
-        <CareerContext.Provider value={{ profile, updateProfile, recommendedPath, calculatePath }}>
+        <CareerContext.Provider value={{ scores, updateScore, recommendedPath, calculatePath }}>
             {children}
         </CareerContext.Provider>
     );

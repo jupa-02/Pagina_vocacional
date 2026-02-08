@@ -1,36 +1,63 @@
 import { GraduationCap, Briefcase, BookOpen, Search, ArrowUpRight, Award, ExternalLink, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-// Mock Data simulates Agent Retrieval
-const mockOpportunities = {
-    maestrias: [
-        { id: 1, type: "Maestría", university: "LSE (London School of Economics)", program: "MSc Development Economics", score: 98, link: "https://www.lse.ac.uk/study-at-lse/Graduate", description: "Enfoque cuantitativo ideal para tu perfil técnico. Red de alumni en organismos multilaterales.", explanation: "Tu perfil 'Tech-Economist' encaja al 98% con el currículo de econometría aplicada." },
-        { id: 2, type: "Maestría", university: "Universidad de los Andes", program: "Maestría en Economía (PEG)", score: 95, link: "https://economia.uniandes.edu.co/posgrados/maestria-en-economia", description: "La mejor opción local con proyección internacional. Convenios de doble titulación.", explanation: "Excelente si buscas mantener tu red local mientras profundizas en teoría." },
-        { id: 3, type: "MBA", university: "INSEAD", program: "Master in Business Administration", score: 99, link: "https://www.insead.edu/", description: "El programa número 1 para perfiles internacionales. Foco en estrategia global.", explanation: "Tu background en gestión empresarial es la base perfecta para este salto." },
-    ],
-    becas: [
-        { id: 1, name: "Crédito Beca Colfuturo", entity: "Colfuturo", deadline: "28 Feb 2026", link: "https://www.colfuturo.org/", description: "Financiación de hasta 50k USD. Condonable hasta el 80%.", type: "Financiación" },
-        { id: 2, name: "Beca Chevening", entity: "UK Govt", deadline: "Nov 2025", link: "https://www.chevening.org/", description: "Beca completa para estudiar un año en UK. Requiere 2 años de experiencia.", type: "Full Ride", explanation: "Tu experiencia en voluntariado suma puntos clave aquí." },
-        { id: 3, name: "Forté Foundation Fellowships", entity: "Forté", deadline: "Varies", link: "http://www.fortefoundation.org/", description: "Becas exclusivas para mujeres líderes en negocios.", type: "Liderazgo", explanation: "Diseñada para potenciar el liderazgo femenino en alta gerencia." },
-    ],
-    empleos: [
-        { id: 1, role: "Data Scientist (Economics)", company: "NuBank", location: "Bogotá / Remoto", score: 94, skills: ["Python", "Causal Inference"], description: "Analizar comportamiento crediticio usando modelos estructurales.", explanation: "Buscan economistas que sepan programar (tu fuerte).", type: "Tech" },
-        { id: 2, role: "Consultor Jr. Políticas Públicas", company: "Fedesarrollo", location: "Bogotá", score: 88, skills: ["Stata", "Redacción"], description: "Apoyo en investigación de mercado laboral y pensiones.", type: "Policy" },
-        { id: 3, role: "Strategy Analyst", company: "McKinsey & Company", location: "Bogotá", score: 97, skills: ["Estrategia", "Problem Solving"], description: "Resolver problemas complejos de negocio para clientes top.", type: "Consultoría", explanation: "Tu perfil híbrido (Gestión + Economía) es oro aquí." },
-    ],
-    cursos: [
-        { id: 1, title: "Microeconometrics with R", platform: "Coursera / Johns Hopkins", description: "Refuerza tus bases en R con aplicaciones modernas.", type: "Certificación", score: 99, explanation: "Cierra la brecha detectada en tu autodiagnóstico de R." },
-        { id: 2, title: "Machine Learning for Economists", platform: "AEA / DataCamp", description: "La intersección perfecta para tu perfil Tech-Economist.", type: "Skill", score: 96 }
-    ]
-};
+import { useCareer } from '../../store/CareerContext';
+import { realOpportunities } from '../../data/opportunities';
+import { useState, useEffect } from 'react';
 
 export default function AgentsDashboard() {
-    const { maestrias, becas, empleos, cursos } = mockOpportunities;
+    const { recommendedPath } = useCareer();
+    const [opportunities, setOpportunities] = useState({
+        maestrias: [],
+        becas: [],
+        empleos: [],
+        cursos: []
+    });
+
+    useEffect(() => {
+        if (!recommendedPath) return;
+
+        // Filter opportunities based on tags that include the recommendedPath
+        // OR generic tags that apply to everyone (if any)
+        const filterByTag = (items) => {
+            return items.filter(item =>
+                item.tags && (item.tags.includes(recommendedPath) || item.tags.includes('all'))
+            ).slice(0, 3); // Take top 3
+        };
+
+        const universityPrograms = filterByTag(realOpportunities.universityPrograms || []);
+        const scholarships = filterByTag(realOpportunities.scholarships || []);
+        const jobs = filterByTag(realOpportunities.jobs || []);
+        const courses = filterByTag(realOpportunities.courses || []);
+
+        setOpportunities({
+            maestrias: universityPrograms,
+            becas: scholarships,
+            empleos: jobs,
+            cursos: courses
+        });
+
+    }, [recommendedPath]);
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 }
+    };
 
     return (
         <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
             className="space-y-12"
         >
             <div className="text-center mb-12">
@@ -38,155 +65,154 @@ export default function AgentsDashboard() {
                     <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
                     AGENTS ACTIVE
                 </div>
-                <h2 className="text-4xl font-serif font-bold text-white mb-2">Oportunidades Encontradas</h2>
-                <p className="text-indigo-200">Nuestros agentes han escaneado 15,000+ fuentes para ti.</p>
+                <h2 className="text-4xl font-serif font-bold text-white mb-2">Oportunidades Reales (2025)</h2>
+                <p className="text-indigo-200">
+                    Basado en tu perfil <strong>{recommendedPath}</strong>, hemos encontrado esto para ti:
+                </p>
             </div>
 
-            {/* SECTION 1: POSGRADOS & BECAS */}
+            {/* SECTION 1: ACADEMIA & BECAS */}
             <div className="grid md:grid-cols-2 gap-8">
                 {/* Masters Column */}
                 <div className="space-y-6">
                     <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                        <GraduationCap className="text-pink-400" /> Posgrados Top Tier
+                        <GraduationCap className="text-pink-400" /> Programas Recomendados
                     </h3>
                     <div className="space-y-4">
-                        {maestrias.map((master, i) => (
-                            <motion.div
-                                key={master.id}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: i * 0.1 }}
-                                className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(99,102,241,0.2)]"
-                            >
-                                <div className="absolute top-4 right-4 text-white/20 group-hover:text-pink-400 transition-colors">
-                                    <ExternalLink size={20} />
-                                </div>
-                                <div className="relative z-10">
-                                    <div className="flex justify-between items-start mb-3">
-                                        <span className="bg-white/10 text-indigo-200 text-[10px] font-extrabold px-2 py-1 rounded uppercase tracking-wider border border-white/10">{master.type}</span>
-                                        {master.score && (
-                                            <div className="text-right">
-                                                <span className="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2 py-1 rounded-full border border-emerald-500/30 block w-fit ml-auto">{master.score}% Match</span>
+                        {opportunities.maestrias.length > 0 ? (
+                            opportunities.maestrias.map((prog, i) => (
+                                <motion.div
+                                    key={prog.id}
+                                    variants={itemVariants}
+                                    className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(99,102,241,0.2)]"
+                                >
+                                    <div className="absolute top-4 right-4 text-white/20 group-hover:text-pink-400 transition-colors">
+                                        <ExternalLink size={20} />
+                                    </div>
+                                    <div>
+                                        <span className="bg-white/10 text-indigo-200 text-[10px] font-extrabold px-2 py-1 rounded uppercase tracking-wider border border-white/10">{prog.type}</span>
+                                        <h3 className="text-lg font-bold text-white mt-2 mb-1 group-hover:text-pink-300 transition-colors">{prog.program}</h3>
+                                        <p className="text-indigo-200 font-medium text-sm mb-2">{prog.university} • {prog.location}</p>
+                                        <p className="text-slate-300 text-sm mb-4 line-clamp-3 font-light leading-relaxed">{prog.description}</p>
+                                        {prog.ranking && (
+                                            <div className="text-xs text-emerald-300 font-bold bg-emerald-500/10 px-2 py-1 rounded-md inline-block border border-emerald-500/20">
+                                                🏆 {prog.ranking}
                                             </div>
                                         )}
                                     </div>
-                                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-pink-300 transition-colors">{master.program}</h3>
-                                    {master.explanation && (
-                                        <p className="text-xs text-emerald-300 font-medium mb-2 italic">✨ {master.explanation}</p>
-                                    )}
-                                    <p className="text-indigo-200 font-medium text-sm mb-3">{master.university}</p>
-                                    <p className="text-slate-300 text-sm mb-4 line-clamp-2 leading-relaxed font-light">{master.description}</p>
-
-                                    <a href={master.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 font-semibold text-sm hover:text-white transition-colors">
-                                        Aplicar ahora <ArrowUpRight className="w-4 h-4 ml-1" />
-                                    </a>
-                                </div>
-                            </motion.div>
-                        ))}
+                                </motion.div>
+                            ))
+                        ) : (
+                            <p className="text-white/50 italic">Buscando programas específicos...</p>
+                        )}
                     </div>
                 </div>
 
                 {/* Scholarships Column */}
                 <div className="space-y-6">
                     <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                        <Award className="text-yellow-400" /> Becas & Financiación
+                        <Award className="text-yellow-400" /> Becas Disponibles
                     </h3>
                     <div className="space-y-4">
-                        {becas.map((beca, i) => (
-                            <motion.div
-                                key={beca.id}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: i * 0.1 }}
-                                className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(250,204,21,0.2)]"
-                            >
-                                <div className="flex justify-between items-start mb-2">
-                                    <h4 className="font-bold text-white text-lg">{beca.name}</h4>
-                                    <span className="bg-white/10 text-yellow-200 text-xs px-2 py-1 rounded border border-white/10">{beca.entity}</span>
-                                </div>
-                                <p className="text-sm text-slate-300 mb-3 font-light">{beca.description}</p>
-                                <div className="flex items-center gap-4 text-xs font-medium text-white/60">
-                                    <span className="flex items-center gap-1"><Clock size={12} /> Deadline: {beca.deadline}</span>
-                                    <a href={beca.link} className="text-yellow-300 hover:text-yellow-200 underline">Más info</a>
-                                </div>
-                            </motion.div>
-                        ))}
+                        {opportunities.becas.length > 0 ? (
+                            opportunities.becas.map((beca, i) => (
+                                <motion.div
+                                    key={beca.id}
+                                    variants={itemVariants}
+                                    className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(250,204,21,0.2)]"
+                                >
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h4 className="font-bold text-white text-lg">{beca.name}</h4>
+                                    </div>
+                                    <p className="text-sm text-yellow-100/80 mb-1 font-medium">{beca.provider}</p>
+                                    <p className="text-sm text-slate-300 mb-4 font-light">{beca.description}</p>
+
+                                    <div className="grid grid-cols-2 gap-2 text-xs">
+                                        <div className="bg-white/5 p-2 rounded border border-white/5">
+                                            <span className="block text-slate-400 mb-0.5">Cobertura</span>
+                                            <span className="text-white font-medium">{beca.coverage}</span>
+                                        </div>
+                                        <div className="bg-white/5 p-2 rounded border border-white/5">
+                                            <span className="block text-slate-400 mb-0.5">Cierre</span>
+                                            <span className="text-white font-medium">{beca.deadline}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-4 text-right">
+                                        <a href={beca.link} target="_blank" rel="noopener noreferrer" className="text-yellow-300 hover:text-yellow-200 text-xs font-bold uppercase tracking-wider underline">
+                                            Ver Convocatoria Oficial
+                                        </a>
+                                    </div>
+                                </motion.div>
+                            ))
+                        ) : (
+                            <p className="text-white/50 italic">Escaneando bases de datos de becas...</p>
+                        )}
                     </div>
                 </div>
             </div>
 
-            {/* SECTION 2: EMPLEOS & CURSOS */}
+            {/* SECTION 2: MUNDO LABORAL & SKILLS */}
             <div className="grid md:grid-cols-2 gap-8">
                 {/* Jobs Column */}
                 <div className="space-y-6">
                     <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                        <Briefcase className="text-blue-400" /> Empleos Top Tier
+                        <Briefcase className="text-blue-400" /> Mercado Laboral (Ejemplos)
                     </h3>
                     <div className="space-y-4">
-                        {empleos.map((job, i) => (
-                            <motion.div
-                                key={job.id}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: i * 0.1 }}
-                                className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(96,165,250,0.2)]"
-                            >
-                                <div className="relative z-10">
-                                    <div className="flex justify-between items-start mb-3">
+                        {opportunities.empleos.length > 0 ? (
+                            opportunities.empleos.map((job, i) => (
+                                <motion.div
+                                    key={job.id}
+                                    variants={itemVariants}
+                                    className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(96,165,250,0.2)]"
+                                >
+                                    <div className="flex justify-between items-start mb-2">
                                         <span className="bg-white/10 text-blue-200 text-[10px] font-extrabold px-2 py-1 rounded uppercase tracking-wider border border-white/10">{job.type}</span>
-                                        {job.score && (
-                                            <div className="text-right">
-                                                <span className="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2 py-1 rounded-full border border-emerald-500/30 block w-fit ml-auto">{job.score}% Match</span>
-                                            </div>
-                                        )}
                                     </div>
-                                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">{job.role}</h3>
-                                    {job.explanation && (
-                                        <p className="text-xs text-emerald-300 font-medium mb-2 italic">✨ {job.explanation}</p>
-                                    )}
-                                    <p className="text-indigo-200 font-medium text-sm mb-2">{job.company} • {job.location}</p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {job.skills.map(skill => (
-                                            <span key={skill} className="text-[10px] bg-white/10 text-white/70 px-2 py-1 rounded">{skill}</span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
+                                    <h3 className="text-lg font-bold text-white mb-0.5 group-hover:text-blue-300 transition-colors">{job.role}</h3>
+                                    <p className="text-indigo-200 text-sm mb-3">{job.company} • {job.location}</p>
+                                    <p className="text-slate-300 text-sm mb-4 font-light leading-relaxed">{job.description}</p>
+
+                                    <a href={job.link} target="_blank" rel="noopener noreferrer" className="inline-block text-blue-300 hover:text-white text-xs font-bold transition-colors">
+                                        Ver Portal de Empleo →
+                                    </a>
+                                </motion.div>
+                            ))
+                        ) : (
+                            <p className="text-white/50 italic">Buscando vacantes relevantes...</p>
+                        )}
                     </div>
                 </div>
 
                 {/* Courses Column */}
                 <div className="space-y-6">
                     <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                        <BookOpen className="text-green-400" /> Cursos y Certificaciones
+                        <BookOpen className="text-green-400" /> Ruta de Aprendizaje
                     </h3>
                     <div className="space-y-4">
-                        {cursos.map((course, i) => (
-                            <motion.div
-                                key={course.id}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: i * 0.1 }}
-                                className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(52,211,153,0.2)]"
-                            >
-                                <div className="relative z-10">
-                                    <div className="flex justify-between items-start mb-3">
+                        {opportunities.cursos.length > 0 ? (
+                            opportunities.cursos.map((course, i) => (
+                                <motion.div
+                                    key={course.id}
+                                    variants={itemVariants}
+                                    className="group relative bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl hover:bg-white/20 transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(52,211,153,0.2)]"
+                                >
+                                    <div className="flex justify-between items-start mb-2">
                                         <span className="bg-white/10 text-green-200 text-[10px] font-extrabold px-2 py-1 rounded uppercase tracking-wider border border-white/10">{course.type}</span>
-                                        {course.score && (
-                                            <div className="text-right">
-                                                <span className="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2 py-1 rounded-full border border-emerald-500/30 block w-fit ml-auto">{course.score}% Match</span>
-                                            </div>
-                                        )}
                                     </div>
-                                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-green-300 transition-colors">{course.title}</h3>
-                                    {course.explanation && (
-                                        <p className="text-xs text-emerald-300 font-medium mb-2 italic">✨ {course.explanation}</p>
-                                    )}
-                                    <p className="text-sm text-slate-300 mt-2 font-light">{course.description}</p>
-                                </div>
-                            </motion.div>
-                        ))}
+                                    <h3 className="text-lg font-bold text-white mb-1 group-hover:text-green-300 transition-colors">{course.title}</h3>
+                                    <p className="text-indigo-200 text-sm mb-2">{course.platform}</p>
+                                    <p className="text-slate-300 text-sm mb-4 font-light">{course.description}</p>
+
+                                    <a href={course.link} target="_blank" rel="noopener noreferrer" className="text-green-300 hover:text-green-200 text-xs font-bold underline">
+                                        Ir al Curso
+                                    </a>
+                                </motion.div>
+                            ))
+                        ) : (
+                            <p className="text-white/50 italic">Curando cursos para ti...</p>
+                        )}
                     </div>
                 </div>
             </div>
